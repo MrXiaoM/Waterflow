@@ -1,4 +1,4 @@
-From f2f55cb7743a44bc8d0db757315cbfab4d43f22f Mon Sep 17 00:00:00 2001
+From b1c95d15351e92c8deee2e5078a54d7e528b5a57 Mon Sep 17 00:00:00 2001
 From: Tux <write@imaginarycode.com>
 Date: Thu, 19 May 2016 11:34:52 -0700
 Subject: [PATCH] Fetch modules from the Waterfall API endpoint
@@ -6,7 +6,7 @@ Subject: [PATCH] Fetch modules from the Waterfall API endpoint
 Don't fetch from the BungeeCord CI, as that only has their modules
 
 diff --git a/proxy/src/main/java/net/md_5/bungee/module/JenkinsModuleSource.java b/proxy/src/main/java/net/md_5/bungee/module/JenkinsModuleSource.java
-index 2536435c..5bb86152 100644
+index 064639f3..2337f615 100644
 --- a/proxy/src/main/java/net/md_5/bungee/module/JenkinsModuleSource.java
 +++ b/proxy/src/main/java/net/md_5/bungee/module/JenkinsModuleSource.java
 @@ -1,10 +1,10 @@
@@ -21,9 +21,9 @@ index 2536435c..5bb86152 100644
 +import java.nio.file.StandardCopyOption;
  import lombok.Data;
  import net.md_5.bungee.Util;
- 
-@@ -18,13 +18,21 @@ public class JenkinsModuleSource implements ModuleSource
-         System.out.println( "Attempting to Jenkins download module " + module.getName() + " v" + version.getBuild() );
+ import net.md_5.bungee.api.ProxyServer;
+@@ -19,14 +19,22 @@ public class JenkinsModuleSource implements ModuleSource
+         ProxyServer.getInstance().getLogger().info( "Attempting to Jenkins download module " + module.getName() + " v" + version.getBuild() );
          try
          {
 -            URL website = new URL( "https://ci.md-5.net/job/BungeeCord/" + version.getBuild() + "/artifact/module/" + module.getName().replace( '_', '-' ) + "/target/" + module.getName() + ".jar" );
@@ -42,10 +42,12 @@ index 2536435c..5bb86152 100644
 +            con.setRequestProperty( "User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36" );
  
 -            Files.write( ByteStreams.toByteArray( con.getInputStream() ), module.getFile() );
+-            ProxyServer.getInstance().getLogger().info( "Download complete" );
 +            Files.copy( con.getInputStream(), module.getFile().toPath(), StandardCopyOption.REPLACE_EXISTING );
-             System.out.println( "Download complete" );
++            System.out.println( "Download complete" );
          } catch ( IOException ex )
          {
+             ProxyServer.getInstance().getLogger().warning( "Failed to download: " + Util.exception( ex ) );
 -- 
-2.43.0
+2.46.0.windows.1
 

@@ -1,0 +1,95 @@
+From f93a64ea1b5419dc0cf80bca73ddac2667583fa9 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?=E4=BA=BA=E9=96=93=E5=B7=A5=E4=BD=9C?=
+ <coolxiaom95@gmail.com>
+Date: Thu, 29 Aug 2024 02:15:13 +0800
+Subject: [PATCH] fix merge error
+
+
+diff --git a/proxy/src/main/java/net/md_5/bungee/ServerConnector.java b/proxy/src/main/java/net/md_5/bungee/ServerConnector.java
+index 3b76c9d1..39739336 100644
+--- a/proxy/src/main/java/net/md_5/bungee/ServerConnector.java
++++ b/proxy/src/main/java/net/md_5/bungee/ServerConnector.java
+@@ -378,16 +378,63 @@ public class ServerConnector extends PacketHandler
+                 // Only send if we are not in the same dimension
+                 if ( login.getDimension() != user.getDimension() ) // Waterfall - defer
+                 {
+-                    user.unsafe().sendPacket( new Respawn( (Integer) user.getDimension() >= 0 ? -1 : 0, login.getWorldName(), login.getSeed(), login.getDifficulty(), login.getGameMode(), login.getPreviousGameMode(), login.getLevelType(), login.isDebug(), login.isFlat(), (byte) 0, login.getDeathLocation(), login.getPortalCooldown() ) );
++                    user.unsafe().sendPacket( new Respawn(
++                            (Integer) user.getDimension() >= 0 ? -1 : 0,
++                            login.getWorldName(),
++                            login.getSeed(),
++                            login.getDifficulty(),
++                            login.getGameMode(),
++                            login.getPreviousGameMode(),
++                            login.getLevelType(),
++                            login.isDebug(),
++                            login.isFlat(),
++                            (byte) 0,
++                            login.getDeathLocation(),
++                            login.getPortalCooldown(),
++                            login.getSeaLevel() ) );
+                 }
+-                Login modLogin = new Login( login.getEntityId(), login.isHardcore(), login.getGameMode(), login.getPreviousGameMode(), login.getWorldNames(), login.getDimensions(), login.getDimension(), login.getWorldName(), login.getSeed(), login.getDifficulty(),
+-                        (byte) user.getPendingConnection().getListener().getTabListSize(), login.getLevelType(), login.getViewDistance(), login.getSimulationDistance(), login.isReducedDebugInfo(), login.isNormalRespawn(), login.isLimitedCrafting(), login.isDebug(), login.isFlat(), login.getDeathLocation(),
+-                        login.getPortalCooldown(), login.isSecureProfile() );
++                Login modLogin = new Login(
++                        login.getEntityId(),
++                        login.isHardcore(),
++                        login.getGameMode(),
++                        login.getPreviousGameMode(),
++                        login.getWorldNames(),
++                        login.getDimensions(),
++                        login.getDimension(),
++                        login.getWorldName(),
++                        login.getSeed(),
++                        login.getDifficulty(),
++                        (byte) user.getPendingConnection().getListener().getTabListSize(),
++                        login.getLevelType(),
++                        login.getViewDistance(),
++                        login.getSimulationDistance(),
++                        login.isReducedDebugInfo(),
++                        login.isNormalRespawn(),
++                        login.isLimitedCrafting(),
++                        login.isDebug(),
++                        login.isFlat(),
++                        login.getDeathLocation(),
++                        login.getPortalCooldown(),
++                        login.getSeaLevel(),
++                        login.isSecureProfile() );
+                 user.unsafe().sendPacket(modLogin);
+                 // Only send if we're in the same dimension
+                 if ( login.getDimension() == user.getDimension() ) // Waterfall - defer
+                 {
+-                    user.unsafe().sendPacket( new Respawn( (Integer) login.getDimension() >= 0 ? -1 : 0, login.getWorldName(), login.getSeed(), login.getDifficulty(), login.getGameMode(), login.getPreviousGameMode(), login.getLevelType(), login.isDebug(), login.isFlat(), (byte) 0, login.getDeathLocation(), login.getPortalCooldown() ) );
++                    user.unsafe().sendPacket( new Respawn(
++                            (Integer) login.getDimension() >= 0 ? -1 : 0,
++                            login.getWorldName(),
++                            login.getSeed(),
++                            login.getDifficulty(),
++                            login.getGameMode(),
++                            login.getPreviousGameMode(),
++                            login.getLevelType(),
++                            login.isDebug(),
++                            login.isFlat(),
++                            (byte) 0,
++                            login.getDeathLocation(),
++                            login.getPortalCooldown(),
++                            login.getSeaLevel() ) );
+                 }
+             }
+             // Waterfall end
+diff --git a/proxy/src/main/java/net/md_5/bungee/connection/DownstreamBridge.java b/proxy/src/main/java/net/md_5/bungee/connection/DownstreamBridge.java
+index 2d3aa70c..d5d3e893 100644
+--- a/proxy/src/main/java/net/md_5/bungee/connection/DownstreamBridge.java
++++ b/proxy/src/main/java/net/md_5/bungee/connection/DownstreamBridge.java
+@@ -141,7 +141,6 @@ public class DownstreamBridge extends PacketHandler
+         } else
+         {
+             // Waterfall start
+-            ServerInfo def = con.updateAndGetNextServer( server.getInfo() );
+             ServerKickEvent event = bungee.getPluginManager().callEvent( new ServerKickEvent( con, server.getInfo(), TextComponent.fromLegacyText( bungee.getTranslation( "lost_connection" ) ), def, ServerKickEvent.State.CONNECTED, ServerKickEvent.Cause.LOST_CONNECTION ) );
+             if ( event.isCancelled() && event.getCancelServer() != null )
+             {
+-- 
+2.46.0.windows.1
+
