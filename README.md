@@ -2,8 +2,8 @@ Waterfall
 =========
 
 > [!CAUTION]
-> This project has reached end of life and is no longer maintained.  
-> We recommend you transition to [Velocity](https://papermc.io/software/velocity). For more information, see the [announcement](https://forums.papermc.io/threads/1088/).
+> This project has reached end of life by PaperMC and is no longer maintained.  
+> The repository will updated with BungeeCord upstream as new as I can keep. There are many waterfall plugins we can't migrate to Velocity very smoothly. It is necessary to update waterfall. PaperMC Community is arrogant, they mark everything they don't like to deprecated as they can.
 
 Waterfall is a fork of the well-known [BungeeCord](https://github.com/SpigotMC/BungeeCord) server teleportation suite.
 
