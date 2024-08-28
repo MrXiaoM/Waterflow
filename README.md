@@ -22,6 +22,20 @@ the ecosystem by allowing changes to be exposed to a wider audience more quickly
 
 Waterfall will still track upstream BungeeCord and merge changes as needed.
 
+## How to update from upstream (BungeeCord)?
+
+```
+sh ./scripts/updateFromUpstream.sh
+sh ./scripts/applyPatches.sh
+```
+and then you should cd into `Waterfall-Proxy` folder, resolve the conflicts, `git add .`, `git am --continue`, balabala...
+
+Try `mvn clean install` to build, if everything done, just
+```
+sh ./scripts/rebuildPatches.sh
+sh ./scripts/upstreamCommit.sh
+```
+
 ## How To (Server Admins)
 
 Download a copy of Waterfall.jar from our homepage here: [Waterfall](https://papermc.io/downloads/waterfall)

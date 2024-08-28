@@ -28,3 +28,9 @@ jobs:
           ./waterfall p
       - name: build
         run: mvn clean install javadoc:javadoc -B
+      - name: artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: Waterfall-Java${{ matrix.java }}
+          path: Waterfall-Proxy/bootstrap/target/Waterfall.jar
+          if-no-files-found: error
