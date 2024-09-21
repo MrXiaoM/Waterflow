@@ -1,4 +1,4 @@
-From 53df94a314b4c46f90c3069173f23082f2edb84a Mon Sep 17 00:00:00 2001
+From 65d97e7bf0af3d15a242603efba283c9d6d3d2ee Mon Sep 17 00:00:00 2001
 From: Colin Godsey <crgodsey@gmail.com>
 Date: Tue, 16 Apr 2019 07:25:52 -0600
 Subject: [PATCH] OSX native zlib and crypto
@@ -28,7 +28,7 @@ index a47bc812..6d874f5d 100755
 +$CXX -Imbedtls/include src/main/c/NativeCipherImpl.cpp -o src/main/resources/${PREFIX:-}native-cipher.so mbedtls/library/libmbedcrypto.a $CXX_ARGS
 +$CXX -Izlib src/main/c/NativeCompressImpl.cpp -o src/main/resources/${PREFIX:-}native-compress.so zlib/libz.a $CXX_ARGS
 diff --git a/native/src/main/java/net/md_5/bungee/jni/NativeCode.java b/native/src/main/java/net/md_5/bungee/jni/NativeCode.java
-index be4d5b0b..157f007f 100644
+index 4426823c..f3f65836 100644
 --- a/native/src/main/java/net/md_5/bungee/jni/NativeCode.java
 +++ b/native/src/main/java/net/md_5/bungee/jni/NativeCode.java
 @@ -27,6 +27,7 @@ public final class NativeCode<T>
@@ -39,14 +39,15 @@ index be4d5b0b..157f007f 100644
          this.name = name;
          this.javaImpl = javaImpl;
          this.nativeImpl = nativeImpl;
-@@ -94,6 +95,6 @@ public final class NativeCode<T>
+@@ -95,7 +96,7 @@ public final class NativeCode<T>
  
      public static boolean isSupported()
      {
--        return "Linux".equals( System.getProperty( "os.name" ) ) && "amd64".equals( System.getProperty( "os.arch" ) );
-+        return ("Linux".equals( System.getProperty( "os.name" ) ) && ("amd64".equals( System.getProperty( "os.arch" ) ) || "x86_64".equals( System.getProperty( "os.arch" )))) || ("Mac OS X".equals( System.getProperty( "os.name" ) ) && "aarch64".equals( System.getProperty( "os.arch" ) )); // Waterfall
+-        return "Linux".equals( System.getProperty( "os.name" ) ) && ( isAmd64() || isAarch64() );
++        return ("Linux".equals( System.getProperty( "os.name" ) ) && ( isAmd64() || isAarch64() )) || ("Mac OS X".equals( System.getProperty( "os.name" ) ) && isAarch64()); // Waterfall
      }
- }
+ 
+     private static boolean isAmd64()
 diff --git a/native/src/main/resources/osx-native-cipher.so b/native/src/main/resources/osx-native-cipher.so
 new file mode 100755
 index 0000000000000000000000000000000000000000..13ce8b6df298be2f4e1693e008371a8770d3b41f
