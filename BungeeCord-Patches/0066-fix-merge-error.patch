@@ -1,4 +1,4 @@
-From f93a64ea1b5419dc0cf80bca73ddac2667583fa9 Mon Sep 17 00:00:00 2001
+From 386b84bcb539632f0197ad45731c2c317001bad3 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?=E4=BA=BA=E9=96=93=E5=B7=A5=E4=BD=9C?=
  <coolxiaom95@gmail.com>
 Date: Thu, 29 Aug 2024 02:15:13 +0800
@@ -6,10 +6,10 @@ Subject: [PATCH] fix merge error
 
 
 diff --git a/proxy/src/main/java/net/md_5/bungee/ServerConnector.java b/proxy/src/main/java/net/md_5/bungee/ServerConnector.java
-index 3b76c9d1..39739336 100644
+index 7a8f38ee..06ffbf76 100644
 --- a/proxy/src/main/java/net/md_5/bungee/ServerConnector.java
 +++ b/proxy/src/main/java/net/md_5/bungee/ServerConnector.java
-@@ -378,16 +378,63 @@ public class ServerConnector extends PacketHandler
+@@ -387,16 +387,63 @@ public class ServerConnector extends PacketHandler
                  // Only send if we are not in the same dimension
                  if ( login.getDimension() != user.getDimension() ) // Waterfall - defer
                  {

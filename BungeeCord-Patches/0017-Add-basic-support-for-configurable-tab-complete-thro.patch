@@ -1,4 +1,4 @@
-From 5343292903efcc962a2a510267018bb5872c3995 Mon Sep 17 00:00:00 2001
+From c3f014dfc172919586f9291f6eea0f2b9d7fa95a Mon Sep 17 00:00:00 2001
 From: Johannes Donath <johannesd@torchmind.com>
 Date: Sat, 4 Jul 2015 06:31:33 +0200
 Subject: [PATCH] Add basic support for configurable tab-complete throttling
@@ -73,10 +73,10 @@ index 741ebfde..91743f01 100644
 +    }
  }
 diff --git a/proxy/src/main/java/net/md_5/bungee/connection/UpstreamBridge.java b/proxy/src/main/java/net/md_5/bungee/connection/UpstreamBridge.java
-index f80515d4..050cc29b 100644
+index 49967de9..0961c6e6 100644
 --- a/proxy/src/main/java/net/md_5/bungee/connection/UpstreamBridge.java
 +++ b/proxy/src/main/java/net/md_5/bungee/connection/UpstreamBridge.java
-@@ -51,6 +51,8 @@ public class UpstreamBridge extends PacketHandler
+@@ -52,6 +52,8 @@ public class UpstreamBridge extends PacketHandler
      private final ProxyServer bungee;
      private final UserConnection con;
  
@@ -85,7 +85,7 @@ index f80515d4..050cc29b 100644
      public UpstreamBridge(ProxyServer bungee, UserConnection con)
      {
          this.bungee = bungee;
-@@ -230,6 +232,20 @@ public class UpstreamBridge extends PacketHandler
+@@ -232,6 +234,20 @@ public class UpstreamBridge extends PacketHandler
      @Override
      public void handle(TabCompleteRequest tabComplete) throws Exception
      {
@@ -107,5 +107,5 @@ index f80515d4..050cc29b 100644
          boolean isRegisteredCommand = false;
          boolean isCommand = tabComplete.getCursor().startsWith( "/" );
 -- 
-2.44.0
+2.46.0.windows.1
 

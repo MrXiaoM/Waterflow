@@ -1,4 +1,4 @@
-From b7a8f1417cc1d9467da1522fb16d777be2100e19 Mon Sep 17 00:00:00 2001
+From fa757ece0592df64bd135fecba63c6035c6b6143 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?=E4=BA=BA=E9=96=93=E5=B7=A5=E4=BD=9C?=
  <coolxiaom95@gmail.com>
 Date: Thu, 29 Aug 2024 02:03:01 +0800
@@ -67,10 +67,10 @@ index 3f9efaa8..c9a5cc25 100644
      /**
       * @return the kick reason
 diff --git a/proxy/src/main/java/net/md_5/bungee/ServerConnector.java b/proxy/src/main/java/net/md_5/bungee/ServerConnector.java
-index a1e8064e..3b76c9d1 100644
+index ccb9d366..7a8f38ee 100644
 --- a/proxy/src/main/java/net/md_5/bungee/ServerConnector.java
 +++ b/proxy/src/main/java/net/md_5/bungee/ServerConnector.java
-@@ -462,7 +462,7 @@ public class ServerConnector extends PacketHandler
+@@ -474,7 +474,7 @@ public class ServerConnector extends PacketHandler
          ServerKickEvent event = new ServerKickEvent( user, target, new BaseComponent[]
          {
              kick.getMessage()

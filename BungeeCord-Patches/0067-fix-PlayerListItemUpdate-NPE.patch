@@ -1,4 +1,4 @@
-From 10d5f0d987aab15dc02d33b7abd18c79bff6ad45 Mon Sep 17 00:00:00 2001
+From c54a27026d5cfdd622fb31d3fdcadf72380a59c3 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?=E4=BA=BA=E9=96=93=E5=B7=A5=E4=BD=9C?=
  <coolxiaom95@gmail.com>
 Date: Thu, 29 Aug 2024 02:51:43 +0800
@@ -6,10 +6,10 @@ Subject: [PATCH] fix PlayerListItemUpdate NPE
 
 
 diff --git a/protocol/src/main/java/net/md_5/bungee/protocol/packet/PlayerListItemUpdate.java b/protocol/src/main/java/net/md_5/bungee/protocol/packet/PlayerListItemUpdate.java
-index a45b001e..b615aa37 100644
+index 40492bd6..899873d8 100644
 --- a/protocol/src/main/java/net/md_5/bungee/protocol/packet/PlayerListItemUpdate.java
 +++ b/protocol/src/main/java/net/md_5/bungee/protocol/packet/PlayerListItemUpdate.java
-@@ -113,7 +113,9 @@ public class PlayerListItemUpdate extends DefinedPacket
+@@ -116,7 +116,9 @@ public class PlayerListItemUpdate extends DefinedPacket
                          }
                          break;
                      case UPDATE_LIST_ORDER:
@@ -18,8 +18,8 @@ index a45b001e..b615aa37 100644
 +                            DefinedPacket.writeVarInt(item.listOrder, buf);
 +                        }
                          break;
-                 }
-             }
+                     case UPDATE_HAT:
+                         buf.writeBoolean( item.showHat );
 -- 
 2.46.0.windows.1
 

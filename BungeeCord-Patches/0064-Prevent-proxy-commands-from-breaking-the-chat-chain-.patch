@@ -1,4 +1,4 @@
-From 0879befb9f3ca6f7dc656fda79c5b25973104222 Mon Sep 17 00:00:00 2001
+From 526212bae4b2acba3e44c272f4f737a8d5a2c2e4 Mon Sep 17 00:00:00 2001
 From: Shane Freeder <theboyetronic@gmail.com>
 Date: Sun, 15 Oct 2023 00:36:38 +0100
 Subject: [PATCH] Prevent proxy commands from breaking the chat chain system
@@ -19,10 +19,10 @@ index e2221010..4dde7257 100644
      // Waterfall end
  }
 diff --git a/protocol/src/main/java/net/md_5/bungee/protocol/Protocol.java b/protocol/src/main/java/net/md_5/bungee/protocol/Protocol.java
-index 0f99ea8b..7c258140 100644
+index f84bfab8..fb239f75 100644
 --- a/protocol/src/main/java/net/md_5/bungee/protocol/Protocol.java
 +++ b/protocol/src/main/java/net/md_5/bungee/protocol/Protocol.java
-@@ -582,6 +582,13 @@ public enum Protocol
+@@ -586,6 +586,13 @@ public enum Protocol
                      map( ProtocolConstants.MINECRAFT_1_20_5, 0x06 ),
                      map( ProtocolConstants.MINECRAFT_1_21_2, 0x07 )
              );
@@ -90,10 +90,10 @@ index 33c838f9..f259ee91 100644
 +    }
  }
 diff --git a/proxy/src/main/java/net/md_5/bungee/connection/UpstreamBridge.java b/proxy/src/main/java/net/md_5/bungee/connection/UpstreamBridge.java
-index 2dafa4d9..b482fe2e 100644
+index e61fcc88..e7f1be2f 100644
 --- a/proxy/src/main/java/net/md_5/bungee/connection/UpstreamBridge.java
 +++ b/proxy/src/main/java/net/md_5/bungee/connection/UpstreamBridge.java
-@@ -196,16 +196,22 @@ public class UpstreamBridge extends PacketHandler
+@@ -198,16 +198,22 @@ public class UpstreamBridge extends PacketHandler
      @Override
      public void handle(ClientCommand command) throws Exception
      {
@@ -118,7 +118,7 @@ index 2dafa4d9..b482fe2e 100644
      {
          for ( int index = 0, length = message.length(); index < length; index++ )
          {
-@@ -224,7 +230,13 @@ public class UpstreamBridge extends PacketHandler
+@@ -226,7 +232,13 @@ public class UpstreamBridge extends PacketHandler
              if ( !chatEvent.isCommand() || !bungee.getPluginManager().dispatchCommand( con, message.substring( 1 ) ) )
              {
                  return message;
