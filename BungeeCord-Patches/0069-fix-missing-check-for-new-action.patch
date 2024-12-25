@@ -1,0 +1,33 @@
+From ba3d18a2bc1b71708799d6ce133d9fa5f575c2fb Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?=E4=BA=BA=E9=96=93=E5=B7=A5=E4=BD=9C?=
+ <coolxiaom95@gmail.com>
+Date: Wed, 25 Dec 2024 18:05:40 +0800
+Subject: [PATCH] fix missing check for new action
+
+
+diff --git a/protocol/src/main/java/net/md_5/bungee/protocol/packet/PlayerListItemUpdate.java b/protocol/src/main/java/net/md_5/bungee/protocol/packet/PlayerListItemUpdate.java
+index 899873d8..95dc4b68 100644
+--- a/protocol/src/main/java/net/md_5/bungee/protocol/packet/PlayerListItemUpdate.java
++++ b/protocol/src/main/java/net/md_5/bungee/protocol/packet/PlayerListItemUpdate.java
+@@ -33,6 +33,7 @@ public class PlayerListItemUpdate extends DefinedPacket
+ 
+             for ( Action action : actions )
+             {
++                if (buf.readableBytes() == 0) break;
+                 switch ( action )
+                 {
+                     case ADD_PLAYER:
+@@ -121,7 +122,9 @@ public class PlayerListItemUpdate extends DefinedPacket
+                         }
+                         break;
+                     case UPDATE_HAT:
+-                        buf.writeBoolean( item.showHat );
++                        if (item.showHat != null) {
++                            buf.writeBoolean(item.showHat);
++                        }
+                         break;
+                 }
+             }
+-- 
+2.46.0.windows.1
+
