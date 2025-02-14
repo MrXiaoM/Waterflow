@@ -1,4 +1,4 @@
-From 67f918c5c88aed7a7fb66fdd47211680516b9447 Mon Sep 17 00:00:00 2001
+From 6e8c339608fa4c2ec4e17f8ac5e9aff4dca7d76f Mon Sep 17 00:00:00 2001
 From: Techcable <Techcable@techcable.net>
 Date: Tue, 3 May 2016 20:31:52 -0700
 Subject: [PATCH] Don't access a ByteBuf's underlying array
@@ -6,7 +6,7 @@ Subject: [PATCH] Don't access a ByteBuf's underlying array
 It returns the underlying array storage, and does *not* return a view of the buffer as an array
 
 diff --git a/protocol/src/main/java/net/md_5/bungee/protocol/packet/PluginMessage.java b/protocol/src/main/java/net/md_5/bungee/protocol/packet/PluginMessage.java
-index 70b292f0..91f71c09 100644
+index 1a7d8512..8f500382 100644
 --- a/protocol/src/main/java/net/md_5/bungee/protocol/packet/PluginMessage.java
 +++ b/protocol/src/main/java/net/md_5/bungee/protocol/packet/PluginMessage.java
 @@ -3,6 +3,7 @@ package net.md_5.bungee.protocol.packet;
@@ -17,7 +17,7 @@ index 70b292f0..91f71c09 100644
  import java.io.ByteArrayInputStream;
  import java.io.DataInput;
  import java.io.DataInputStream;
-@@ -47,10 +48,23 @@ public class PluginMessage extends DefinedPacket
+@@ -49,10 +50,23 @@ public class PluginMessage extends DefinedPacket
              return "legacy:" + tag.toLowerCase( Locale.ROOT );
          }
      };
@@ -56,10 +56,10 @@ index b58a01c6..c7637608 100644
              }
  
 diff --git a/proxy/src/main/java/net/md_5/bungee/connection/DownstreamBridge.java b/proxy/src/main/java/net/md_5/bungee/connection/DownstreamBridge.java
-index d518d05f..21019091 100644
+index 64e9a764..f5b3f7a8 100644
 --- a/proxy/src/main/java/net/md_5/bungee/connection/DownstreamBridge.java
 +++ b/proxy/src/main/java/net/md_5/bungee/connection/DownstreamBridge.java
-@@ -325,7 +325,7 @@ public class DownstreamBridge extends PacketHandler
+@@ -328,7 +328,7 @@ public class DownstreamBridge extends PacketHandler
  
              brand = ByteBufAllocator.DEFAULT.heapBuffer();
              DefinedPacket.writeString( bungee.getName() + " (" + bungee.getVersion() + ")" + " <- " + serverBrand, brand );

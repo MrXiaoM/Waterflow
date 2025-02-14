@@ -1,4 +1,4 @@
-From fa757ece0592df64bd135fecba63c6035c6b6143 Mon Sep 17 00:00:00 2001
+From db4f766e2d99dfc659c6624593977b21edf26880 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?=E4=BA=BA=E9=96=93=E5=B7=A5=E4=BD=9C?=
  <coolxiaom95@gmail.com>
 Date: Thu, 29 Aug 2024 02:03:01 +0800
@@ -80,7 +80,7 @@ index ccb9d366..7a8f38ee 100644
          {
              // Pre cancel the event if we are going to try another server
 diff --git a/proxy/src/main/java/net/md_5/bungee/connection/DownstreamBridge.java b/proxy/src/main/java/net/md_5/bungee/connection/DownstreamBridge.java
-index ba6b611a..2d3aa70c 100644
+index 3b0b9d36..f23b1af1 100644
 --- a/proxy/src/main/java/net/md_5/bungee/connection/DownstreamBridge.java
 +++ b/proxy/src/main/java/net/md_5/bungee/connection/DownstreamBridge.java
 @@ -98,16 +98,19 @@ public class DownstreamBridge extends PacketHandler
@@ -129,7 +129,7 @@ index ba6b611a..2d3aa70c 100644
          }
      }
  
-@@ -651,10 +666,14 @@ public class DownstreamBridge extends PacketHandler
+@@ -654,10 +669,14 @@ public class DownstreamBridge extends PacketHandler
      public void handle(Kick kick) throws Exception
      {
          ServerInfo def = con.updateAndGetNextServer( server.getInfo() );

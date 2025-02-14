@@ -1,4 +1,4 @@
-From 98b86ee9792cfbf6d2f5e8e256070555f4228729 Mon Sep 17 00:00:00 2001
+From dccd905f47c384aafef7a0f1ebf13f1e6f971937 Mon Sep 17 00:00:00 2001
 From: Aaron Hill <aa1ronham@gmail.com>
 Date: Thu, 15 Sep 2016 22:38:37 +0200
 Subject: [PATCH] Fix potion race condition on Forge 1.8.9
@@ -117,7 +117,7 @@ index 00000000..7ed2dc3a
 +    }
 +}
 diff --git a/proxy/src/main/java/net/md_5/bungee/UserConnection.java b/proxy/src/main/java/net/md_5/bungee/UserConnection.java
-index a3be968d..e09f49be 100644
+index bf45501a..05116ba0 100644
 --- a/proxy/src/main/java/net/md_5/bungee/UserConnection.java
 +++ b/proxy/src/main/java/net/md_5/bungee/UserConnection.java
 @@ -1,7 +1,9 @@
@@ -142,10 +142,10 @@ index a3be968d..e09f49be 100644
      @Setter
      private String lastCommandTabbed;
 diff --git a/proxy/src/main/java/net/md_5/bungee/connection/DownstreamBridge.java b/proxy/src/main/java/net/md_5/bungee/connection/DownstreamBridge.java
-index 1c075a9f..b131f794 100644
+index 3c286239..e384f168 100644
 --- a/proxy/src/main/java/net/md_5/bungee/connection/DownstreamBridge.java
 +++ b/proxy/src/main/java/net/md_5/bungee/connection/DownstreamBridge.java
-@@ -746,6 +746,32 @@ public class DownstreamBridge extends PacketHandler
+@@ -749,6 +749,32 @@ public class DownstreamBridge extends PacketHandler
          }
      }
  

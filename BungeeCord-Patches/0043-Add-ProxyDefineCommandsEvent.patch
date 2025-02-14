@@ -1,4 +1,4 @@
-From 91ebdb943d58a989d4cf0fb05b682c5f4bb21e30 Mon Sep 17 00:00:00 2001
+From cee938250e1511d53d4e7fd6232192991dfdd407 Mon Sep 17 00:00:00 2001
 From: Shane Freeder <theboyetronic@gmail.com>
 Date: Thu, 14 Mar 2019 07:44:06 +0000
 Subject: [PATCH] Add ProxyDefineCommandsEvent
@@ -54,10 +54,10 @@ index 00000000..1fd4fc90
 +
 +}
 diff --git a/proxy/src/main/java/net/md_5/bungee/connection/DownstreamBridge.java b/proxy/src/main/java/net/md_5/bungee/connection/DownstreamBridge.java
-index 1290d756..97cc926c 100644
+index d06902c6..c177715c 100644
 --- a/proxy/src/main/java/net/md_5/bungee/connection/DownstreamBridge.java
 +++ b/proxy/src/main/java/net/md_5/bungee/connection/DownstreamBridge.java
-@@ -785,9 +785,25 @@ public class DownstreamBridge extends PacketHandler
+@@ -788,9 +788,25 @@ public class DownstreamBridge extends PacketHandler
      {
          boolean modified = false;
  

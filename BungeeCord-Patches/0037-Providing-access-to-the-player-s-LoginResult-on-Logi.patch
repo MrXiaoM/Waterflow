@@ -1,4 +1,4 @@
-From 8c7b7437b62151c1aa3f0043b6f85dc0ca4b7704 Mon Sep 17 00:00:00 2001
+From da771a5c0f6920e26fe097df5ff13cced0143b00 Mon Sep 17 00:00:00 2001
 From: phenomax <phenomax@revayd.net>
 Date: Thu, 10 Aug 2017 18:41:17 +0200
 Subject: [PATCH] Providing access to the player's LoginResult on LoginEvent
@@ -51,15 +51,15 @@ similarity index 100%
 rename from proxy/src/main/java/net/md_5/bungee/connection/LoginResult.java
 rename to api/src/main/java/net/md_5/bungee/connection/LoginResult.java
 diff --git a/proxy/src/main/java/net/md_5/bungee/connection/InitialHandler.java b/proxy/src/main/java/net/md_5/bungee/connection/InitialHandler.java
-index fd577788..1a6b7ae3 100644
+index b8b7102c..5ffe4981 100644
 --- a/proxy/src/main/java/net/md_5/bungee/connection/InitialHandler.java
 +++ b/proxy/src/main/java/net/md_5/bungee/connection/InitialHandler.java
-@@ -653,7 +653,7 @@ public class InitialHandler extends PacketHandler implements PendingConnection
+@@ -631,7 +631,7 @@ public class InitialHandler extends PacketHandler implements PendingConnection
          };
  
          // fire login event
--        bungee.getPluginManager().callEvent( new LoginEvent( InitialHandler.this, complete ) );
-+        bungee.getPluginManager().callEvent( new LoginEvent( InitialHandler.this, complete, this.getLoginProfile() ) ); // Waterfall: Parse LoginResult object to new constructor of LoginEvent
+-        bungee.getPluginManager().callEvent( new LoginEvent( InitialHandler.this, eventLoopCallback( complete ) ) );
++        bungee.getPluginManager().callEvent( new LoginEvent( InitialHandler.this, eventLoopCallback( complete ), this.getLoginProfile() ) ); // Waterfall: Parse LoginResult object to new constructor of LoginEvent
      }
  
      private void finish2()

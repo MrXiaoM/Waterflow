@@ -1,0 +1,36 @@
+From 3656519017241b6684093efad44dda02ea942653 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?=E4=BA=BA=E9=96=93=E5=B7=A5=E4=BD=9C?=
+ <coolxiaom95@gmail.com>
+Date: Fri, 14 Feb 2025 17:38:56 +0800
+Subject: [PATCH] fix merge conflict
+
+
+diff --git a/proxy/src/main/java/net/md_5/bungee/compress/PacketDecompressor.java b/proxy/src/main/java/net/md_5/bungee/compress/PacketDecompressor.java
+index d115a046..c7954354 100644
+--- a/proxy/src/main/java/net/md_5/bungee/compress/PacketDecompressor.java
++++ b/proxy/src/main/java/net/md_5/bungee/compress/PacketDecompressor.java
+@@ -15,7 +15,7 @@ import net.md_5.bungee.protocol.OverflowPacketException;
+ public class PacketDecompressor extends MessageToMessageDecoder<ByteBuf>
+ {
+ 
+-    private final int compressionThreshold;
++    private static final int MAX_DECOMPRESSED_LEN = 1 << 23;
+     private final BungeeZlib zlib = CompressFactory.zlib.newInstance();
+ 
+     @Override
+@@ -39,8 +39,10 @@ public class PacketDecompressor extends MessageToMessageDecoder<ByteBuf>
+             out.add( in.retain() );
+         } else
+         {
+-            Preconditions.checkArgument( size >= compressionThreshold, "Decompressed size %s less than compression threshold %s", size, compressionThreshold);
+-            ByteBuf decompressed = ctx.alloc().directBuffer();
++            if ( size > MAX_DECOMPRESSED_LEN )
++            {
++                throw new OverflowPacketException( "Packet may not be larger than " + MAX_DECOMPRESSED_LEN + " bytes" );
++            }
+ 
+             // Do not use size as max capacity, as its possible that the entity rewriter increases the size afterwards
+             // This would result in a kick (it happens rarely as the entity ids size must differ)
+-- 
+2.46.0.windows.1
+

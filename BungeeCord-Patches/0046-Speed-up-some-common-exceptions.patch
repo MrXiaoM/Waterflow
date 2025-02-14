@@ -1,4 +1,4 @@
-From 9f0b6ec099a75d3f7d2e700c93546deed0175ae9 Mon Sep 17 00:00:00 2001
+From 07554dc01eea2d9a276b8b68d976b86a6c2fff57 Mon Sep 17 00:00:00 2001
 From: Shane Freeder <theboyetronic@gmail.com>
 Date: Mon, 25 Nov 2019 19:54:06 +0000
 Subject: [PATCH] Speed up some common exceptions
@@ -59,10 +59,10 @@ index 6c0ef4df..076ddd70 100644
 +    // Waterfall end
  }
 diff --git a/protocol/src/main/java/net/md_5/bungee/protocol/DefinedPacket.java b/protocol/src/main/java/net/md_5/bungee/protocol/DefinedPacket.java
-index 6cd9e6a4..dffd3b7a 100644
+index 58e261b7..41cc5a2f 100644
 --- a/protocol/src/main/java/net/md_5/bungee/protocol/DefinedPacket.java
 +++ b/protocol/src/main/java/net/md_5/bungee/protocol/DefinedPacket.java
-@@ -47,6 +47,9 @@ public abstract class DefinedPacket
+@@ -48,6 +48,9 @@ public abstract class DefinedPacket
          }
      }
  
@@ -72,7 +72,7 @@ index 6cd9e6a4..dffd3b7a 100644
      public static void writeString(String s, ByteBuf buf)
      {
          writeString( s, buf, Short.MAX_VALUE );
-@@ -242,13 +245,18 @@ public abstract class DefinedPacket
+@@ -252,13 +255,18 @@ public abstract class DefinedPacket
          byte in;
          while ( true )
          {
@@ -172,10 +172,10 @@ index 237955ab..d0bd4d75 100644
 +    // Waterfall end
  }
 diff --git a/proxy/src/main/java/net/md_5/bungee/connection/InitialHandler.java b/proxy/src/main/java/net/md_5/bungee/connection/InitialHandler.java
-index d6872035..a7241527 100644
+index 7a4ff8be..d6f567f5 100644
 --- a/proxy/src/main/java/net/md_5/bungee/connection/InitialHandler.java
 +++ b/proxy/src/main/java/net/md_5/bungee/connection/InitialHandler.java
-@@ -23,6 +23,8 @@ import javax.crypto.SecretKey;
+@@ -24,6 +24,8 @@ import javax.crypto.SecretKey;
  import lombok.AllArgsConstructor;
  import lombok.Data;
  import lombok.EqualsAndHashCode;
@@ -184,7 +184,7 @@ index d6872035..a7241527 100644
  import lombok.Getter;
  import lombok.RequiredArgsConstructor;
  import lombok.ToString;
-@@ -518,6 +520,14 @@ public class InitialHandler extends PacketHandler implements PendingConnection
+@@ -510,6 +512,14 @@ public class InitialHandler extends PacketHandler implements PendingConnection
          Preconditions.checkState( EncryptionUtil.check( loginRequest.getPublicKey(), encryptResponse, request ), "Invalid verification" );
  
          SecretKey sharedKey = EncryptionUtil.getSecret( encryptResponse, request );

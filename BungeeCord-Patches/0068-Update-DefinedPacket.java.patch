@@ -1,4 +1,4 @@
-From d637c1f71df7910456fe28381a5d6c99341ec45f Mon Sep 17 00:00:00 2001
+From 683db9d58196c732da8184c6658ed40e93dddf3b Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?=E4=BA=BA=E9=96=93=E5=B7=A5=E4=BD=9C?=
  <coolxiaom95@gmail.com>
 Date: Thu, 29 Aug 2024 02:55:21 +0800
@@ -6,10 +6,10 @@ Subject: [PATCH] Update DefinedPacket.java
 
 
 diff --git a/protocol/src/main/java/net/md_5/bungee/protocol/DefinedPacket.java b/protocol/src/main/java/net/md_5/bungee/protocol/DefinedPacket.java
-index dafaba54..ea75995b 100644
+index 89ceb33f..0f2b01c8 100644
 --- a/protocol/src/main/java/net/md_5/bungee/protocol/DefinedPacket.java
 +++ b/protocol/src/main/java/net/md_5/bungee/protocol/DefinedPacket.java
-@@ -327,7 +327,9 @@ public abstract class DefinedPacket
+@@ -337,7 +337,9 @@ public abstract class DefinedPacket
  
      public static UUID readUUID(ByteBuf input)
      {
