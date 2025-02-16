@@ -1,0 +1,33 @@
+From d1a324211cba63a2674a59acb2a34d0642769b0b Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?=E4=BA=BA=E9=96=93=E5=B7=A5=E4=BD=9C?=
+ <coolxiaom95@gmail.com>
+Date: Sun, 16 Feb 2025 13:04:41 +0800
+Subject: [PATCH] add old constructor fallback
+
+
+diff --git a/protocol/src/main/java/net/md_5/bungee/protocol/packet/Team.java b/protocol/src/main/java/net/md_5/bungee/protocol/packet/Team.java
+index 7cd52028..40c4a931 100644
+--- a/protocol/src/main/java/net/md_5/bungee/protocol/packet/Team.java
++++ b/protocol/src/main/java/net/md_5/bungee/protocol/packet/Team.java
+@@ -48,6 +48,18 @@ public class Team extends DefinedPacket
+         this.mode = 1;
+     }
+ 
++    public Team(String name,
++                byte mode,
++                Either<String, BaseComponent> displayName,
++                Either<String, BaseComponent> prefix,
++                Either<String, BaseComponent> suffix,
++                String nameTagVisibility,
++                String collisionRule,
++                int color, byte friendlyFire, String[] players
++    ) {
++        this(name, mode, displayName, prefix, suffix, NameTagVisibility.BY_NAME.get(nameTagVisibility), CollisionRule.BY_NAME.get(collisionRule), color, friendlyFire, players);
++    }
++
+     @Override
+     public void read(ByteBuf buf, ProtocolConstants.Direction direction, int protocolVersion)
+     {
+-- 
+2.46.0.windows.1
+
