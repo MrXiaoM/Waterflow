@@ -1,0 +1,60 @@
+From a3dc11d60e7606c3b88160421b585cc2a1b367ee Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?=E4=BA=BA=E9=96=93=E5=B7=A5=E4=BD=9C?=
+ <coolxiaom95@gmail.com>
+Date: Mon, 3 Mar 2025 20:27:57 +0800
+Subject: [PATCH] Ignore plugin packet decode error
+
+
+diff --git a/protocol/src/main/java/net/md_5/bungee/protocol/MinecraftDecoder.java b/protocol/src/main/java/net/md_5/bungee/protocol/MinecraftDecoder.java
+index 3a4a735c..97c1147f 100644
+--- a/protocol/src/main/java/net/md_5/bungee/protocol/MinecraftDecoder.java
++++ b/protocol/src/main/java/net/md_5/bungee/protocol/MinecraftDecoder.java
+@@ -6,6 +6,9 @@ import io.netty.channel.ChannelHandlerContext;
+ import io.netty.handler.codec.CorruptedFrameException;
+ import io.netty.handler.codec.MessageToMessageDecoder;
+ import java.util.List;
++import java.util.logging.Level;
++import java.util.logging.Logger;
++
+ import lombok.AllArgsConstructor;
+ import lombok.Getter;
+ import lombok.Setter;
+@@ -22,6 +25,7 @@ public class MinecraftDecoder extends MessageToMessageDecoder<ByteBuf>
+     private int protocolVersion;
+     @Setter
+     private boolean supportsForge = false;
++    private Logger logger = Logger.getLogger("BungeeCord.Decoder");
+ 
+     public MinecraftDecoder(Protocol protocol, boolean server, int protocolVersion) {
+         this.protocol = protocol;
+@@ -78,6 +82,13 @@ public class MinecraftDecoder extends MessageToMessageDecoder<ByteBuf>
+             out.add( new PacketWrapper( packet, slice, protocol ) );
+             slice = null;
+         } catch (BadPacketException | IndexOutOfBoundsException e) {
++            if (packetTypeInfo instanceof Class) { // NeoWorld: ignore plugin packet decode error
++                String name = ((Class<?>) packetTypeInfo).getName();
++                if (!name.startsWith("net.md_5.bungee")) {
++                    logger.log(Level.WARNING, "Decode packet error", e);
++                    return;
++                }
++            }
+             // Waterfall start: Additional DoS mitigations
+             if(!DEBUG) {
+                 throw e;
+@@ -94,6 +105,13 @@ public class MinecraftDecoder extends MessageToMessageDecoder<ByteBuf>
+             throw new FastDecoderException("Error decoding packet " + packetTypeStr + " with contents:\n" + ByteBufUtil.prettyHexDump(slice), e); // Waterfall
+             // Waterfall start
+         } catch (Exception e) {
++            if (packetTypeInfo instanceof Class) { // NeoWorld: ignore plugin packet decode error
++                String name = ((Class<?>) packetTypeInfo).getName();
++                if (!name.startsWith("net.md_5.bungee")) {
++                    logger.log(Level.WARNING, "Decode packet error", e);
++                    return;
++                }
++            }
+             if (!DEBUG) {
+                 throw e;
+             }
+-- 
+2.46.0.windows.1
+
