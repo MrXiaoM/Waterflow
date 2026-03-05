@@ -1,4 +1,4 @@
-From 65d97e7bf0af3d15a242603efba283c9d6d3d2ee Mon Sep 17 00:00:00 2001
+From 8d6bc1d5bf5e88d34d0f22ca5fdba49aba950a32 Mon Sep 17 00:00:00 2001
 From: Colin Godsey <crgodsey@gmail.com>
 Date: Tue, 16 Apr 2019 07:25:52 -0600
 Subject: [PATCH] OSX native zlib and crypto
@@ -28,10 +28,10 @@ index a47bc812..6d874f5d 100755
 +$CXX -Imbedtls/include src/main/c/NativeCipherImpl.cpp -o src/main/resources/${PREFIX:-}native-cipher.so mbedtls/library/libmbedcrypto.a $CXX_ARGS
 +$CXX -Izlib src/main/c/NativeCompressImpl.cpp -o src/main/resources/${PREFIX:-}native-compress.so zlib/libz.a $CXX_ARGS
 diff --git a/native/src/main/java/net/md_5/bungee/jni/NativeCode.java b/native/src/main/java/net/md_5/bungee/jni/NativeCode.java
-index 4426823c..f3f65836 100644
+index e915a44c..14bb735b 100644
 --- a/native/src/main/java/net/md_5/bungee/jni/NativeCode.java
 +++ b/native/src/main/java/net/md_5/bungee/jni/NativeCode.java
-@@ -27,6 +27,7 @@ public final class NativeCode<T>
+@@ -29,6 +29,7 @@ public final class NativeCode<T>
  
      public NativeCode(String name, Supplier<? extends T> javaImpl, Supplier<? extends T> nativeImpl, boolean extendedSupportCheck)
      {
@@ -39,9 +39,9 @@ index 4426823c..f3f65836 100644
          this.name = name;
          this.javaImpl = javaImpl;
          this.nativeImpl = nativeImpl;
-@@ -95,7 +96,7 @@ public final class NativeCode<T>
+@@ -121,7 +122,7 @@ public final class NativeCode<T>
  
-     public static boolean isSupported()
+     private static boolean isSupportedPlatformAndArch()
      {
 -        return "Linux".equals( System.getProperty( "os.name" ) ) && ( isAmd64() || isAarch64() );
 +        return ("Linux".equals( System.getProperty( "os.name" ) ) && ( isAmd64() || isAarch64() )) || ("Mac OS X".equals( System.getProperty( "os.name" ) ) && isAarch64()); // Waterfall
@@ -844,5 +844,5 @@ literal 0
 HcmV?d00001
 
 -- 
-2.46.0.windows.1
+2.50.1.windows.1
 

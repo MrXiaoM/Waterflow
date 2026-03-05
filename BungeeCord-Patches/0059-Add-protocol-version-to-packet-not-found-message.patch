@@ -1,4 +1,4 @@
-From e1f5c6635f8bb0524e44c1edbdec532ce3e00afa Mon Sep 17 00:00:00 2001
+From a76c75357ff67afcc81913059e577027bed164e4 Mon Sep 17 00:00:00 2001
 From: Shane Freeder <theboyetronic@gmail.com>
 Date: Sun, 12 Jun 2022 06:45:54 +0100
 Subject: [PATCH] Add protocol version to packet not found message
@@ -6,19 +6,23 @@ Subject: [PATCH] Add protocol version to packet not found message
 Also avoids a double get, but, this is probably trivial
 
 diff --git a/protocol/src/main/java/net/md_5/bungee/protocol/Protocol.java b/protocol/src/main/java/net/md_5/bungee/protocol/Protocol.java
-index 34be8c00..b4b6f25e 100644
+index f7b0d6a7..94dc655b 100644
 --- a/protocol/src/main/java/net/md_5/bungee/protocol/Protocol.java
 +++ b/protocol/src/main/java/net/md_5/bungee/protocol/Protocol.java
-@@ -2,6 +2,8 @@ package net.md_5.bungee.protocol;
- 
- import com.google.common.base.Preconditions;
- import com.google.common.collect.Iterables;
+@@ -6,6 +6,12 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+ import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+ import it.unimi.dsi.fastutil.objects.Object2IntMap;
+ import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 +
 +import gnu.trove.impl.Constants;
- import gnu.trove.map.TIntObjectMap;
- import gnu.trove.map.TObjectIntMap;
- import gnu.trove.map.hash.TIntObjectHashMap;
-@@ -1028,9 +1030,12 @@ public enum Protocol
++import gnu.trove.map.TIntObjectMap;
++import gnu.trove.map.TObjectIntMap;
++import gnu.trove.map.hash.TIntObjectHashMap;
++import gnu.trove.map.hash.TObjectIntHashMap;
+ import java.util.function.Supplier;
+ import lombok.Data;
+ import lombok.Getter;
+@@ -1192,9 +1198,12 @@ public enum Protocol
              {
                  throw new BadPacketException( "Unsupported protocol version" );
              }
@@ -34,5 +38,5 @@ index 34be8c00..b4b6f25e 100644
      }
  }
 -- 
-2.46.0.windows.1
+2.50.1.windows.1
 

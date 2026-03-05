@@ -1,4 +1,4 @@
-From db4f766e2d99dfc659c6624593977b21edf26880 Mon Sep 17 00:00:00 2001
+From 1bc2a1cd7d0ae3772604c8b51160aa6de60228b0 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?=E4=BA=BA=E9=96=93=E5=B7=A5=E4=BD=9C?=
  <coolxiaom95@gmail.com>
 Date: Thu, 29 Aug 2024 02:03:01 +0800
@@ -67,10 +67,10 @@ index 3f9efaa8..c9a5cc25 100644
      /**
       * @return the kick reason
 diff --git a/proxy/src/main/java/net/md_5/bungee/ServerConnector.java b/proxy/src/main/java/net/md_5/bungee/ServerConnector.java
-index ccb9d366..7a8f38ee 100644
+index 5325b7fc..88ac61e0 100644
 --- a/proxy/src/main/java/net/md_5/bungee/ServerConnector.java
 +++ b/proxy/src/main/java/net/md_5/bungee/ServerConnector.java
-@@ -474,7 +474,7 @@ public class ServerConnector extends PacketHandler
+@@ -481,7 +481,7 @@ public class ServerConnector extends PacketHandler
          ServerKickEvent event = new ServerKickEvent( user, target, new BaseComponent[]
          {
              kick.getMessage()
@@ -80,10 +80,10 @@ index ccb9d366..7a8f38ee 100644
          {
              // Pre cancel the event if we are going to try another server
 diff --git a/proxy/src/main/java/net/md_5/bungee/connection/DownstreamBridge.java b/proxy/src/main/java/net/md_5/bungee/connection/DownstreamBridge.java
-index 3b0b9d36..f23b1af1 100644
+index 76b6a2a6..59591141 100644
 --- a/proxy/src/main/java/net/md_5/bungee/connection/DownstreamBridge.java
 +++ b/proxy/src/main/java/net/md_5/bungee/connection/DownstreamBridge.java
-@@ -98,16 +98,19 @@ public class DownstreamBridge extends PacketHandler
+@@ -100,16 +100,19 @@ public class DownstreamBridge extends PacketHandler
              return;
          }
  
@@ -108,7 +108,7 @@ index 3b0b9d36..f23b1af1 100644
      }
  
      @Override
-@@ -137,7 +140,19 @@ public class DownstreamBridge extends PacketHandler
+@@ -139,7 +142,19 @@ public class DownstreamBridge extends PacketHandler
              con.sendMessage( bungee.getTranslation( "server_went_down", def.getName() ) );
          } else
          {
@@ -129,7 +129,7 @@ index 3b0b9d36..f23b1af1 100644
          }
      }
  
-@@ -654,10 +669,14 @@ public class DownstreamBridge extends PacketHandler
+@@ -656,10 +671,14 @@ public class DownstreamBridge extends PacketHandler
      public void handle(Kick kick) throws Exception
      {
          ServerInfo def = con.updateAndGetNextServer( server.getInfo() );
@@ -146,5 +146,5 @@ index 3b0b9d36..f23b1af1 100644
          {
              con.connectNow( event.getCancelServer(), ServerConnectEvent.Reason.KICK_REDIRECT );
 -- 
-2.46.0.windows.1
+2.50.1.windows.1
 

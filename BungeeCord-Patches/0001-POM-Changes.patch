@@ -1,4 +1,4 @@
-From fd540ba8177f1fe4e2dfd482f7ecf8ffe4aed53a Mon Sep 17 00:00:00 2001
+From c4666539f4c9a3517f8be0f7379692e120e8b49e Mon Sep 17 00:00:00 2001
 From: Tux <write@imaginarycode.com>
 Date: Thu, 19 May 2016 19:33:31 +0200
 Subject: [PATCH] POM Changes
@@ -7,10 +7,10 @@ Subject: [PATCH] POM Changes
 - Deploy to papermc mvn repo
 
 diff --git a/api/pom.xml b/api/pom.xml
-index 57c96a42..00537b66 100644
+index d45fb235..86da49a8 100644
 --- a/api/pom.xml
 +++ b/api/pom.xml
-@@ -4,42 +4,42 @@
+@@ -4,48 +4,48 @@
      <modelVersion>4.0.0</modelVersion>
  
      <parent>
@@ -18,7 +18,7 @@ index 57c96a42..00537b66 100644
 -        <artifactId>bungeecord-parent</artifactId>
 +        <groupId>io.github.waterfallmc</groupId>
 +        <artifactId>waterfall-parent</artifactId>
-         <version>1.21-R0.1-SNAPSHOT</version>
+         <version>1.21-R0.5-SNAPSHOT</version>
          <relativePath>../pom.xml</relativePath>
      </parent>
  
@@ -26,7 +26,7 @@ index 57c96a42..00537b66 100644
 -    <artifactId>bungeecord-api</artifactId>
 +    <groupId>io.github.waterfallmc</groupId>
 +    <artifactId>waterfall-api</artifactId>
-     <version>1.21-R0.1-SNAPSHOT</version>
+     <version>1.21-R0.5-SNAPSHOT</version>
      <packaging>jar</packaging>
  
 -    <name>BungeeCord-API</name>
@@ -52,6 +52,14 @@ index 57c96a42..00537b66 100644
          </dependency>
          <dependency>
 -            <groupId>net.md-5</groupId>
+-            <artifactId>bungeecord-dialog</artifactId>
++            <groupId>io.github.waterfallmc</groupId>
++            <artifactId>waterfall-dialog</artifactId>
+             <version>${project.version}</version>
+             <scope>compile</scope>
+         </dependency>
+         <dependency>
+-            <groupId>net.md-5</groupId>
 -            <artifactId>bungeecord-event</artifactId>
 +            <groupId>io.github.waterfallmc</groupId>
 +            <artifactId>waterfall-event</artifactId>
@@ -67,10 +75,10 @@ index 57c96a42..00537b66 100644
              <scope>compile</scope>
          </dependency>
 diff --git a/bootstrap/pom.xml b/bootstrap/pom.xml
-index ff27b54e..22ce6779 100644
+index 509fddd5..67e8bad5 100644
 --- a/bootstrap/pom.xml
 +++ b/bootstrap/pom.xml
-@@ -4,39 +4,40 @@
+@@ -4,40 +4,41 @@
      <modelVersion>4.0.0</modelVersion>
  
      <parent>
@@ -78,7 +86,7 @@ index ff27b54e..22ce6779 100644
 -        <artifactId>bungeecord-parent</artifactId>
 +        <groupId>io.github.waterfallmc</groupId>
 +        <artifactId>waterfall-parent</artifactId>
-         <version>1.21-R0.1-SNAPSHOT</version>
+         <version>1.21-R0.5-SNAPSHOT</version>
          <relativePath>../pom.xml</relativePath>
      </parent>
  
@@ -86,7 +94,7 @@ index ff27b54e..22ce6779 100644
 -    <artifactId>bungeecord-bootstrap</artifactId>
 +    <groupId>io.github.waterfallmc</groupId>
 +    <artifactId>waterfall-bootstrap</artifactId>
-     <version>1.21-R0.1-SNAPSHOT</version>
+     <version>1.21-R0.5-SNAPSHOT</version>
      <packaging>jar</packaging>
  
 -    <name>BungeeCord-Bootstrap</name>
@@ -95,6 +103,7 @@ index ff27b54e..22ce6779 100644
 +    <description>Java 1.6 loader for Waterfall</description>
  
      <properties>
+         <skipPublishing>true</skipPublishing>
          <maven.deploy.skip>true</maven.deploy.skip>
          <maven.javadoc.skip>true</maven.javadoc.skip>
 -        <maven.compiler.source>1.6</maven.compiler.source>
@@ -122,7 +131,7 @@ index ff27b54e..22ce6779 100644
          <plugins>
              <plugin>
                  <groupId>org.apache.maven.plugins</groupId>
-@@ -45,7 +46,7 @@
+@@ -46,7 +47,7 @@
                  <configuration>
                      <archive>
                          <manifestEntries>
@@ -130,7 +139,7 @@ index ff27b54e..22ce6779 100644
 +                            <Main-Class>net.md_5.bungee.Bootstrap</Main-Class>
                              <Implementation-Version>${describe}</Implementation-Version>
                              <Specification-Version>${maven.build.timestamp}</Specification-Version>
-                         </manifestEntries>
+                             <Enable-Native-Access>ALL-UNNAMED</Enable-Native-Access>
 diff --git a/bootstrap/src/main/java/net/md_5/bungee/Bootstrap.java b/bootstrap/src/main/java/net/md_5/bungee/Bootstrap.java
 index 6be22739..a4516ed9 100644
 --- a/bootstrap/src/main/java/net/md_5/bungee/Bootstrap.java
@@ -145,7 +154,7 @@ index 6be22739..a4516ed9 100644
              return;
          }
 diff --git a/chat/pom.xml b/chat/pom.xml
-index 9a9bc506..b8c60c9f 100644
+index ed80a085..79a94905 100644
 --- a/chat/pom.xml
 +++ b/chat/pom.xml
 @@ -4,19 +4,19 @@
@@ -156,7 +165,7 @@ index 9a9bc506..b8c60c9f 100644
 -        <artifactId>bungeecord-parent</artifactId>
 +        <groupId>io.github.waterfallmc</groupId>
 +        <artifactId>waterfall-parent</artifactId>
-         <version>1.21-R0.1-SNAPSHOT</version>
+         <version>1.21-R0.5-SNAPSHOT</version>
          <relativePath>../pom.xml</relativePath>
      </parent>
  
@@ -164,7 +173,7 @@ index 9a9bc506..b8c60c9f 100644
 -    <artifactId>bungeecord-chat</artifactId>
 +    <groupId>io.github.waterfallmc</groupId>
 +    <artifactId>waterfall-chat</artifactId>
-     <version>1.21-R0.1-SNAPSHOT</version>
+     <version>1.21-R0.5-SNAPSHOT</version>
      <packaging>jar</packaging>
  
 -    <name>BungeeCord-Chat</name>
@@ -175,7 +184,7 @@ index 9a9bc506..b8c60c9f 100644
      <dependencies>
          <dependency>
 diff --git a/config/pom.xml b/config/pom.xml
-index 58f0b7ca..10d1d4ca 100644
+index 5f0f46a8..b8d4d69a 100644
 --- a/config/pom.xml
 +++ b/config/pom.xml
 @@ -4,19 +4,19 @@
@@ -186,7 +195,7 @@ index 58f0b7ca..10d1d4ca 100644
 -        <artifactId>bungeecord-parent</artifactId>
 +        <groupId>io.github.waterfallmc</groupId>
 +        <artifactId>waterfall-parent</artifactId>
-         <version>1.21-R0.1-SNAPSHOT</version>
+         <version>1.21-R0.5-SNAPSHOT</version>
          <relativePath>../pom.xml</relativePath>
      </parent>
  
@@ -194,7 +203,7 @@ index 58f0b7ca..10d1d4ca 100644
 -    <artifactId>bungeecord-config</artifactId>
 +    <groupId>io.github.waterfallmc</groupId>
 +    <artifactId>waterfall-config</artifactId>
-     <version>1.21-R0.1-SNAPSHOT</version>
+     <version>1.21-R0.5-SNAPSHOT</version>
      <packaging>jar</packaging>
  
 -    <name>BungeeCord-Config</name>
@@ -204,8 +213,57 @@ index 58f0b7ca..10d1d4ca 100644
  
      <dependencies>
          <dependency>
+diff --git a/dialog/README.md b/dialog/README.md
+index fff791cd..ca973c77 100644
+--- a/dialog/README.md
++++ b/dialog/README.md
+@@ -1,4 +1,4 @@
+-BungeeCord-Dialog
++Waterfall-Dialog
+ =================
+ 
+ Highly experimental API, subject to breakage. All contributions welcome, including major refactors/design changes.
+diff --git a/dialog/pom.xml b/dialog/pom.xml
+index 9e0033df..91618665 100644
+--- a/dialog/pom.xml
++++ b/dialog/pom.xml
+@@ -4,19 +4,19 @@
+     <modelVersion>4.0.0</modelVersion>
+ 
+     <parent>
+-        <groupId>net.md-5</groupId>
+-        <artifactId>bungeecord-parent</artifactId>
++        <groupId>io.github.waterfallmc</groupId>
++        <artifactId>waterfall-parent</artifactId>
+         <version>1.21-R0.5-SNAPSHOT</version>
+         <relativePath>../pom.xml</relativePath>
+     </parent>
+ 
+-    <groupId>net.md-5</groupId>
+-    <artifactId>bungeecord-dialog</artifactId>
++    <groupId>io.github.waterfallmc</groupId>
++    <artifactId>waterfall-dialog</artifactId>
+     <version>1.21-R0.5-SNAPSHOT</version>
+     <packaging>jar</packaging>
+ 
+-    <name>BungeeCord-Dialog</name>
+-    <description>Minecraft dialog API intended for use with BungeeCord</description>
++    <name>Waterfall-Dialog</name>
++    <description>Minecraft dialog API intended for use with Waterfall</description>
+     <licenses>
+         <license>
+             <name>BSD-3-Clause</name>
+@@ -28,7 +28,7 @@
+     <dependencies>
+         <dependency>
+             <groupId>net.md-5</groupId>
+-            <artifactId>bungeecord-chat</artifactId>
++            <artifactId>waterfall-chat</artifactId>
+             <version>${project.version}</version>
+             <scope>compile</scope>
+         </dependency>
 diff --git a/event/pom.xml b/event/pom.xml
-index 84711f0f..2ac455cc 100644
+index 463149f2..1fdbea07 100644
 --- a/event/pom.xml
 +++ b/event/pom.xml
 @@ -4,17 +4,17 @@
@@ -216,7 +274,7 @@ index 84711f0f..2ac455cc 100644
 -        <artifactId>bungeecord-parent</artifactId>
 +        <groupId>io.github.waterfallmc</groupId>
 +        <artifactId>waterfall-parent</artifactId>
-         <version>1.21-R0.1-SNAPSHOT</version>
+         <version>1.21-R0.5-SNAPSHOT</version>
          <relativePath>../pom.xml</relativePath>
      </parent>
  
@@ -224,7 +282,7 @@ index 84711f0f..2ac455cc 100644
 -    <artifactId>bungeecord-event</artifactId>
 +    <groupId>io.github.waterfallmc</groupId>
 +    <artifactId>waterfall-event</artifactId>
-     <version>1.21-R0.1-SNAPSHOT</version>
+     <version>1.21-R0.5-SNAPSHOT</version>
      <packaging>jar</packaging>
  
 -    <name>BungeeCord-Event</name>
@@ -233,7 +291,7 @@ index 84711f0f..2ac455cc 100644
 +    <description>Generic java event dispatching API intended for use with Waterfall.</description>
  </project>
 diff --git a/log/pom.xml b/log/pom.xml
-index 0091af13..3851e6ce 100644
+index 3efba3c6..3d936b77 100644
 --- a/log/pom.xml
 +++ b/log/pom.xml
 @@ -4,19 +4,19 @@
@@ -244,7 +302,7 @@ index 0091af13..3851e6ce 100644
 -        <artifactId>bungeecord-parent</artifactId>
 +        <groupId>io.github.waterfallmc</groupId>
 +        <artifactId>waterfall-parent</artifactId>
-         <version>1.21-R0.1-SNAPSHOT</version>
+         <version>1.21-R0.5-SNAPSHOT</version>
          <relativePath>../pom.xml</relativePath>
      </parent>
  
@@ -252,7 +310,7 @@ index 0091af13..3851e6ce 100644
 -    <artifactId>bungeecord-log</artifactId>
 +    <groupId>io.github.waterfallmc</groupId>
 +    <artifactId>waterfall-log</artifactId>
-     <version>1.21-R0.1-SNAPSHOT</version>
+     <version>1.21-R0.5-SNAPSHOT</version>
      <packaging>jar</packaging>
  
 -    <name>BungeeCord-Log</name>
@@ -274,7 +332,7 @@ index 0091af13..3851e6ce 100644
              <scope>compile</scope>
          </dependency>
 diff --git a/module/cmd-alert/pom.xml b/module/cmd-alert/pom.xml
-index fd6bb27e..07b901a3 100644
+index 992dc637..1d4f36a5 100644
 --- a/module/cmd-alert/pom.xml
 +++ b/module/cmd-alert/pom.xml
 @@ -4,14 +4,14 @@
@@ -285,7 +343,7 @@ index fd6bb27e..07b901a3 100644
 -        <artifactId>bungeecord-module</artifactId>
 +        <groupId>io.github.waterfallmc</groupId>
 +        <artifactId>waterfall-module</artifactId>
-         <version>1.21-R0.1-SNAPSHOT</version>
+         <version>1.21-R0.5-SNAPSHOT</version>
          <relativePath>../pom.xml</relativePath>
      </parent>
  
@@ -293,11 +351,11 @@ index fd6bb27e..07b901a3 100644
 -    <artifactId>bungeecord-module-cmd-alert</artifactId>
 +    <groupId>io.github.waterfallmc</groupId>
 +    <artifactId>waterfall-module-cmd-alert</artifactId>
-     <version>1.21-R0.1-SNAPSHOT</version>
+     <version>1.21-R0.5-SNAPSHOT</version>
      <packaging>jar</packaging>
  
 diff --git a/module/cmd-find/pom.xml b/module/cmd-find/pom.xml
-index a679a54a..e3a8a06d 100644
+index 499a39ac..91133358 100644
 --- a/module/cmd-find/pom.xml
 +++ b/module/cmd-find/pom.xml
 @@ -4,14 +4,14 @@
@@ -308,7 +366,7 @@ index a679a54a..e3a8a06d 100644
 -        <artifactId>bungeecord-module</artifactId>
 +        <groupId>io.github.waterfallmc</groupId>
 +        <artifactId>waterfall-module</artifactId>
-         <version>1.21-R0.1-SNAPSHOT</version>
+         <version>1.21-R0.5-SNAPSHOT</version>
          <relativePath>../pom.xml</relativePath>
      </parent>
  
@@ -316,11 +374,11 @@ index a679a54a..e3a8a06d 100644
 -    <artifactId>bungeecord-module-cmd-find</artifactId>
 +    <groupId>io.github.waterfallmc</groupId>
 +    <artifactId>waterfall-module-cmd-find</artifactId>
-     <version>1.21-R0.1-SNAPSHOT</version>
+     <version>1.21-R0.5-SNAPSHOT</version>
      <packaging>jar</packaging>
  
 diff --git a/module/cmd-kick/pom.xml b/module/cmd-kick/pom.xml
-index 8f79be48..3a45cb54 100644
+index 187960d2..f216d1e5 100644
 --- a/module/cmd-kick/pom.xml
 +++ b/module/cmd-kick/pom.xml
 @@ -4,14 +4,14 @@
@@ -331,7 +389,7 @@ index 8f79be48..3a45cb54 100644
 -        <artifactId>bungeecord-module</artifactId>
 +        <groupId>io.github.waterfallmc</groupId>
 +        <artifactId>waterfall-module</artifactId>
-         <version>1.21-R0.1-SNAPSHOT</version>
+         <version>1.21-R0.5-SNAPSHOT</version>
          <relativePath>../pom.xml</relativePath>
      </parent>
  
@@ -339,11 +397,11 @@ index 8f79be48..3a45cb54 100644
 -    <artifactId>bungeecord-module-cmd-kick</artifactId>
 +    <groupId>io.github.waterfallmc</groupId>
 +    <artifactId>waterfall-module-cmd-kick</artifactId>
-     <version>1.21-R0.1-SNAPSHOT</version>
+     <version>1.21-R0.5-SNAPSHOT</version>
      <packaging>jar</packaging>
  
 diff --git a/module/cmd-list/pom.xml b/module/cmd-list/pom.xml
-index 39e7b998..933fc3ed 100644
+index a400389c..4eb8ecc2 100644
 --- a/module/cmd-list/pom.xml
 +++ b/module/cmd-list/pom.xml
 @@ -4,14 +4,14 @@
@@ -354,7 +412,7 @@ index 39e7b998..933fc3ed 100644
 -        <artifactId>bungeecord-module</artifactId>
 +        <groupId>io.github.waterfallmc</groupId>
 +        <artifactId>waterfall-module</artifactId>
-         <version>1.21-R0.1-SNAPSHOT</version>
+         <version>1.21-R0.5-SNAPSHOT</version>
          <relativePath>../pom.xml</relativePath>
      </parent>
  
@@ -362,11 +420,11 @@ index 39e7b998..933fc3ed 100644
 -    <artifactId>bungeecord-module-cmd-list</artifactId>
 +    <groupId>io.github.waterfallmc</groupId>
 +    <artifactId>waterfall-module-cmd-list</artifactId>
-     <version>1.21-R0.1-SNAPSHOT</version>
+     <version>1.21-R0.5-SNAPSHOT</version>
      <packaging>jar</packaging>
  
 diff --git a/module/cmd-send/pom.xml b/module/cmd-send/pom.xml
-index fe51d004..6b3e2e87 100644
+index 8d904ddd..4df56eeb 100644
 --- a/module/cmd-send/pom.xml
 +++ b/module/cmd-send/pom.xml
 @@ -4,14 +4,14 @@
@@ -377,7 +435,7 @@ index fe51d004..6b3e2e87 100644
 -        <artifactId>bungeecord-module</artifactId>
 +        <groupId>io.github.waterfallmc</groupId>
 +        <artifactId>waterfall-module</artifactId>
-         <version>1.21-R0.1-SNAPSHOT</version>
+         <version>1.21-R0.5-SNAPSHOT</version>
          <relativePath>../pom.xml</relativePath>
      </parent>
  
@@ -385,11 +443,11 @@ index fe51d004..6b3e2e87 100644
 -    <artifactId>bungeecord-module-cmd-send</artifactId>
 +    <groupId>io.github.waterfallmc</groupId>
 +    <artifactId>waterfall-module-cmd-send</artifactId>
-     <version>1.21-R0.1-SNAPSHOT</version>
+     <version>1.21-R0.5-SNAPSHOT</version>
      <packaging>jar</packaging>
  
 diff --git a/module/cmd-server/pom.xml b/module/cmd-server/pom.xml
-index bc1409aa..45cca078 100644
+index e9606e3d..a6019518 100644
 --- a/module/cmd-server/pom.xml
 +++ b/module/cmd-server/pom.xml
 @@ -4,14 +4,14 @@
@@ -400,7 +458,7 @@ index bc1409aa..45cca078 100644
 -        <artifactId>bungeecord-module</artifactId>
 +        <groupId>io.github.waterfallmc</groupId>
 +        <artifactId>waterfall-module</artifactId>
-         <version>1.21-R0.1-SNAPSHOT</version>
+         <version>1.21-R0.5-SNAPSHOT</version>
          <relativePath>../pom.xml</relativePath>
      </parent>
  
@@ -408,11 +466,11 @@ index bc1409aa..45cca078 100644
 -    <artifactId>bungeecord-module-cmd-server</artifactId>
 +    <groupId>io.github.waterfallmc</groupId>
 +    <artifactId>waterfall-module-cmd-server</artifactId>
-     <version>1.21-R0.1-SNAPSHOT</version>
+     <version>1.21-R0.5-SNAPSHOT</version>
      <packaging>jar</packaging>
  
 diff --git a/module/pom.xml b/module/pom.xml
-index cea355bd..b946e1bd 100644
+index d583a421..55ca6cbd 100644
 --- a/module/pom.xml
 +++ b/module/pom.xml
 @@ -4,19 +4,19 @@
@@ -423,7 +481,7 @@ index cea355bd..b946e1bd 100644
 -        <artifactId>bungeecord-parent</artifactId>
 +        <groupId>io.github.waterfallmc</groupId>
 +        <artifactId>waterfall-parent</artifactId>
-         <version>1.21-R0.1-SNAPSHOT</version>
+         <version>1.21-R0.5-SNAPSHOT</version>
          <relativePath>../pom.xml</relativePath>
      </parent>
  
@@ -431,7 +489,7 @@ index cea355bd..b946e1bd 100644
 -    <artifactId>bungeecord-module</artifactId>
 +    <groupId>io.github.waterfallmc</groupId>
 +    <artifactId>waterfall-module</artifactId>
-     <version>1.21-R0.1-SNAPSHOT</version>
+     <version>1.21-R0.5-SNAPSHOT</version>
      <packaging>pom</packaging>
  
 -    <name>BungeeCord Modules</name>
@@ -441,15 +499,16 @@ index cea355bd..b946e1bd 100644
  
      <modules>
          <module>cmd-alert</module>
-@@ -29,15 +29,15 @@
+@@ -29,7 +29,7 @@
      </modules>
  
      <properties>
 -        <module.author>SpigotMC</module.author>
 +        <module.author>WaterfallMC</module.author>
+         <skipPublishing>true</skipPublishing>
          <maven.deploy.skip>true</maven.deploy.skip>
          <maven.javadoc.skip>true</maven.javadoc.skip>
-     </properties>
+@@ -37,8 +37,8 @@
  
      <dependencies>
          <dependency>
@@ -461,7 +520,7 @@ index cea355bd..b946e1bd 100644
              <scope>compile</scope>
          </dependency>
 diff --git a/module/reconnect-yaml/pom.xml b/module/reconnect-yaml/pom.xml
-index f1fb430a..66e8e0b4 100644
+index 7f97a88e..b35c7df6 100644
 --- a/module/reconnect-yaml/pom.xml
 +++ b/module/reconnect-yaml/pom.xml
 @@ -4,14 +4,14 @@
@@ -472,7 +531,7 @@ index f1fb430a..66e8e0b4 100644
 -        <artifactId>bungeecord-module</artifactId>
 +        <groupId>io.github.waterfallmc</groupId>
 +        <artifactId>waterfall-module</artifactId>
-         <version>1.21-R0.1-SNAPSHOT</version>
+         <version>1.21-R0.5-SNAPSHOT</version>
          <relativePath>../pom.xml</relativePath>
      </parent>
  
@@ -480,11 +539,11 @@ index f1fb430a..66e8e0b4 100644
 -    <artifactId>bungeecord-module-reconnect-yaml</artifactId>
 +    <groupId>io.github.waterfallmc</groupId>
 +    <artifactId>waterfall-module-reconnect-yaml</artifactId>
-     <version>1.21-R0.1-SNAPSHOT</version>
+     <version>1.21-R0.5-SNAPSHOT</version>
      <packaging>jar</packaging>
  
 diff --git a/native/pom.xml b/native/pom.xml
-index bd3a8ab8..49347e1d 100644
+index 147fa4f1..3ca06403 100644
 --- a/native/pom.xml
 +++ b/native/pom.xml
 @@ -4,19 +4,19 @@
@@ -495,7 +554,7 @@ index bd3a8ab8..49347e1d 100644
 -        <artifactId>bungeecord-parent</artifactId>
 +        <groupId>io.github.waterfallmc</groupId>
 +        <artifactId>waterfall-parent</artifactId>
-         <version>1.21-R0.1-SNAPSHOT</version>
+         <version>1.21-R0.5-SNAPSHOT</version>
          <relativePath>../pom.xml</relativePath>
      </parent>
  
@@ -503,7 +562,7 @@ index bd3a8ab8..49347e1d 100644
 -    <artifactId>bungeecord-native</artifactId>
 +    <groupId>io.github.waterfallmc</groupId>
 +    <artifactId>waterfall-native</artifactId>
-     <version>1.21-R0.1-SNAPSHOT</version>
+     <version>1.21-R0.5-SNAPSHOT</version>
      <packaging>jar</packaging>
  
 -    <name>BungeeCord-Native</name>
@@ -513,8 +572,62 @@ index bd3a8ab8..49347e1d 100644
  
      <dependencies>
          <dependency>
+diff --git a/native/src/main/java/net/md_5/bungee/jni/NativeCode.java b/native/src/main/java/net/md_5/bungee/jni/NativeCode.java
+index 3432aa2c..e915a44c 100644
+--- a/native/src/main/java/net/md_5/bungee/jni/NativeCode.java
++++ b/native/src/main/java/net/md_5/bungee/jni/NativeCode.java
+@@ -46,7 +46,7 @@ public final class NativeCode<T>
+         if ( enableNativeFlag && !loaded && isSupported() )
+         {
+             String name = this.name + ( isAarch64() ? "-arm" : "" );
+-            String fullName = "bungeecord-" + name;
++            String fullName = "waterfall-" + name;
+ 
+             try
+             {
+diff --git a/nbt/README.md b/nbt/README.md
+index 86305b4a..b8758b72 100644
+--- a/nbt/README.md
++++ b/nbt/README.md
+@@ -1,4 +1,4 @@
+-BungeeCord-NBT
++Waterfall-NBT
+ =================
+ 
+-Minimal implementation of NBT for use in BungeeCord
++Minimal implementation of NBT for use in Waterfall
+diff --git a/nbt/pom.xml b/nbt/pom.xml
+index d7ff234f..ecfaeb7e 100644
+--- a/nbt/pom.xml
++++ b/nbt/pom.xml
+@@ -4,19 +4,19 @@
+     <modelVersion>4.0.0</modelVersion>
+ 
+     <parent>
+-        <groupId>net.md-5</groupId>
+-        <artifactId>bungeecord-parent</artifactId>
++        <groupId>io.github.waterfallmc</groupId>
++        <artifactId>waterfall-parent</artifactId>
+         <version>1.21-R0.5-SNAPSHOT</version>
+         <relativePath>../pom.xml</relativePath>
+     </parent>
+ 
+-    <groupId>net.md-5</groupId>
+-    <artifactId>bungeecord-nbt</artifactId>
++    <groupId>io.github.waterfallmc</groupId>
++    <artifactId>waterfall-nbt</artifactId>
+     <version>1.21-R0.5-SNAPSHOT</version>
+     <packaging>jar</packaging>
+ 
+-    <name>BungeeCord-NBT</name>
+-    <description>Minimal implementation of NBT for use in BungeeCord</description>
++    <name>Waterfall-NBT</name>
++    <description>Minimal implementation of NBT for use in Waterfall</description>
+     <licenses>
+         <license>
+             <name>BSD-3-Clause</name>
 diff --git a/pom.xml b/pom.xml
-index fb8077b8..4a4287eb 100644
+index 7c931649..8e291851 100644
 --- a/pom.xml
 +++ b/pom.xml
 @@ -3,18 +3,18 @@
@@ -525,7 +638,7 @@ index fb8077b8..4a4287eb 100644
 -    <artifactId>bungeecord-parent</artifactId>
 +    <groupId>io.github.waterfallmc</groupId>
 +    <artifactId>waterfall-parent</artifactId>
-     <version>1.21-R0.1-SNAPSHOT</version>
+     <version>1.21-R0.5-SNAPSHOT</version>
      <packaging>pom</packaging>
  
 -    <name>BungeeCord-Parent</name>
@@ -565,7 +678,7 @@ index fb8077b8..4a4287eb 100644
          </developer>
      </developers>
  
-@@ -46,28 +58,24 @@
+@@ -49,28 +61,24 @@
      </modules>
  
      <scm>
@@ -583,17 +696,17 @@ index fb8077b8..4a4287eb 100644
      </issueManagement>
 -    <ciManagement>
 -        <system>jenkins</system>
--        <url>http://ci.md-5.net/job/BungeeCord</url>
+-        <url>https://hub.spigotmc.org/jenkins/job/BungeeCord/</url>
 -    </ciManagement>
  
      <distributionManagement>
 -        <snapshotRepository>
--            <id>sonatype-nexus-snapshots</id>
--            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+-            <id>central-portal-snapshots</id>
+-            <url>https://central.sonatype.com/repository/maven-snapshots/</url>
 -        </snapshotRepository>
          <repository>
--            <id>sonatype-nexus-staging</id>
--            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+-            <id>ossrh-staging-api</id>
+-            <url>https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2/</url>
 +            <id>papermc-releases</id>
 +            <url>https://papermc.io/repo/repository/maven-releases/</url>
          </repository>
@@ -604,7 +717,7 @@ index fb8077b8..4a4287eb 100644
      </distributionManagement>
  
      <properties>
-@@ -149,12 +157,21 @@
+@@ -146,12 +154,21 @@
                      </execution>
                  </executions>
              </plugin>
@@ -626,7 +739,7 @@ index fb8077b8..4a4287eb 100644
                  <groupId>org.apache.maven.plugins</groupId>
                  <artifactId>maven-checkstyle-plugin</artifactId>
                  <version>3.6.0</version>
-@@ -179,6 +196,7 @@
+@@ -176,6 +193,7 @@
                      </dependency>
                  </dependencies>
              </plugin>
@@ -634,7 +747,7 @@ index fb8077b8..4a4287eb 100644
              <plugin>
                  <groupId>org.codehaus.mojo</groupId>
                  <artifactId>animal-sniffer-maven-plugin</artifactId>
-@@ -300,6 +318,15 @@
+@@ -297,6 +315,15 @@
                                  </goals>
                              </execution>
                          </executions>
@@ -650,7 +763,7 @@ index fb8077b8..4a4287eb 100644
                      </plugin>
                      <plugin>
                          <groupId>org.projectlombok</groupId>
-@@ -348,6 +375,7 @@
+@@ -345,6 +372,7 @@
                                      <!-- lombok does not add @return or @param which causes warnings, so ignore -->
                                      <doclint>none</doclint>
                                      <sourcepath>${project.build.directory}/delombok</sourcepath>
@@ -659,7 +772,7 @@ index fb8077b8..4a4287eb 100644
                              </execution>
                          </executions>
 diff --git a/protocol/pom.xml b/protocol/pom.xml
-index d697cea8..b85d2755 100644
+index 31f3bb52..d98dc06b 100644
 --- a/protocol/pom.xml
 +++ b/protocol/pom.xml
 @@ -4,19 +4,19 @@
@@ -670,7 +783,7 @@ index d697cea8..b85d2755 100644
 -        <artifactId>bungeecord-parent</artifactId>
 +        <groupId>io.github.waterfallmc</groupId>
 +        <artifactId>waterfall-parent</artifactId>
-         <version>1.21-R0.1-SNAPSHOT</version>
+         <version>1.21-R0.5-SNAPSHOT</version>
          <relativePath>../pom.xml</relativePath>
      </parent>
  
@@ -678,7 +791,7 @@ index d697cea8..b85d2755 100644
 -    <artifactId>bungeecord-protocol</artifactId>
 +    <groupId>io.github.waterfallmc</groupId>
 +    <artifactId>waterfall-protocol</artifactId>
-     <version>1.21-R0.1-SNAPSHOT</version>
+     <version>1.21-R0.5-SNAPSHOT</version>
      <packaging>jar</packaging>
  
 -    <name>BungeeCord-Protocol</name>
@@ -688,19 +801,27 @@ index d697cea8..b85d2755 100644
  
      <!-- We really shouldn't depend on external repositories -->
      <repositories>
-@@ -35,8 +35,8 @@
+@@ -35,14 +35,14 @@
              <scope>compile</scope>
          </dependency>
          <dependency>
 -            <groupId>net.md-5</groupId>
--            <artifactId>bungeecord-chat</artifactId>
+-            <artifactId>bungeecord-serializer</artifactId>
 +            <groupId>io.github.waterfallmc</groupId>
-+            <artifactId>waterfall-chat</artifactId>
++            <artifactId>waterfall-serializer</artifactId>
+             <version>${project.version}</version>
+             <scope>compile</scope>
+         </dependency>
+         <dependency>
+-            <groupId>net.md-5</groupId>
+-            <artifactId>bungeecord-nbt</artifactId>
++            <groupId>io.github.waterfallmc</groupId>
++            <artifactId>waterfall-nbt</artifactId>
              <version>${project.version}</version>
              <scope>compile</scope>
          </dependency>
 diff --git a/proxy/pom.xml b/proxy/pom.xml
-index 764ae27d..f84bee26 100644
+index 7ebe35f8..f1fadd9d 100644
 --- a/proxy/pom.xml
 +++ b/proxy/pom.xml
 @@ -4,18 +4,18 @@
@@ -711,7 +832,7 @@ index 764ae27d..f84bee26 100644
 -        <artifactId>bungeecord-parent</artifactId>
 +        <groupId>io.github.waterfallmc</groupId>
 +        <artifactId>waterfall-parent</artifactId>
-         <version>1.21-R0.1-SNAPSHOT</version>
+         <version>1.21-R0.5-SNAPSHOT</version>
          <relativePath>../pom.xml</relativePath>
      </parent>
  
@@ -719,7 +840,7 @@ index 764ae27d..f84bee26 100644
 -    <artifactId>bungeecord-proxy</artifactId>
 +    <groupId>io.github.waterfallmc</groupId>
 +    <artifactId>waterfall-proxy</artifactId>
-     <version>1.21-R0.1-SNAPSHOT</version>
+     <version>1.21-R0.5-SNAPSHOT</version>
      <packaging>jar</packaging>
  
 -    <name>BungeeCord-Proxy</name>
@@ -727,8 +848,8 @@ index 764ae27d..f84bee26 100644
      <description>Proxy component of the Elastic Portal Suite</description>
  
      <properties>
-@@ -64,38 +64,38 @@
-             <classifier>linux-aarch_64</classifier>
+@@ -65,38 +65,38 @@
+             <scope>compile</scope>
          </dependency>
          <dependency>
 -            <groupId>net.md-5</groupId>
@@ -778,8 +899,23 @@ index 764ae27d..f84bee26 100644
              <version>${project.version}</version>
              <scope>compile</scope>
          </dependency>
+diff --git a/proxy/src/main/java/net/md_5/bungee/BungeeCordLauncher.java b/proxy/src/main/java/net/md_5/bungee/BungeeCordLauncher.java
+index 6fbfc9d4..e8e34757 100644
+--- a/proxy/src/main/java/net/md_5/bungee/BungeeCordLauncher.java
++++ b/proxy/src/main/java/net/md_5/bungee/BungeeCordLauncher.java
+@@ -58,8 +58,8 @@ public class BungeeCordLauncher
+                 System.err.println( "*** Warning, this build is outdated ***" );
+                 System.err.println( "*** Please download a new build from https://www.spigotmc.org/go/bungeecord-dl ***" );
+                 System.err.println( "*** You will get NO support regarding this build ***" );
+-                System.err.println( "*** Server will start in 10 seconds ***" );
+-                Thread.sleep( TimeUnit.SECONDS.toMillis( 10 ) );
++                //System.err.println( "*** Server will start in 10 seconds ***" );
++                //Thread.sleep( TimeUnit.SECONDS.toMillis( 10 ) );
+             }
+         }
+ 
 diff --git a/query/pom.xml b/query/pom.xml
-index 84c5f207..5e1b0ac7 100644
+index 98c88cad..c57c6b13 100644
 --- a/query/pom.xml
 +++ b/query/pom.xml
 @@ -4,19 +4,19 @@
@@ -790,7 +926,7 @@ index 84c5f207..5e1b0ac7 100644
 -        <artifactId>bungeecord-parent</artifactId>
 +        <groupId>io.github.waterfallmc</groupId>
 +        <artifactId>waterfall-parent</artifactId>
-         <version>1.21-R0.1-SNAPSHOT</version>
+         <version>1.21-R0.5-SNAPSHOT</version>
          <relativePath>../pom.xml</relativePath>
      </parent>
  
@@ -798,7 +934,7 @@ index 84c5f207..5e1b0ac7 100644
 -    <artifactId>bungeecord-query</artifactId>
 +    <groupId>io.github.waterfallmc</groupId>
 +    <artifactId>waterfall-query</artifactId>
-     <version>1.21-R0.1-SNAPSHOT</version>
+     <version>1.21-R0.5-SNAPSHOT</version>
      <packaging>jar</packaging>
  
 -    <name>BungeeCord-Query</name>
@@ -819,11 +955,11 @@ index 84c5f207..5e1b0ac7 100644
              <version>${project.version}</version>
              <scope>compile</scope>
          </dependency>
-diff --git a/slf4j/pom.xml b/slf4j/pom.xml
-index 5c611d8c..8860998c 100644
---- a/slf4j/pom.xml
-+++ b/slf4j/pom.xml
-@@ -4,18 +4,18 @@
+diff --git a/serializer/pom.xml b/serializer/pom.xml
+index b082b3e6..da618cf3 100644
+--- a/serializer/pom.xml
++++ b/serializer/pom.xml
+@@ -4,19 +4,19 @@
      <modelVersion>4.0.0</modelVersion>
  
      <parent>
@@ -831,7 +967,53 @@ index 5c611d8c..8860998c 100644
 -        <artifactId>bungeecord-parent</artifactId>
 +        <groupId>io.github.waterfallmc</groupId>
 +        <artifactId>waterfall-parent</artifactId>
-         <version>1.21-R0.1-SNAPSHOT</version>
+         <version>1.21-R0.5-SNAPSHOT</version>
+         <relativePath>../pom.xml</relativePath>
+     </parent>
+ 
+-    <groupId>net.md-5</groupId>
+-    <artifactId>bungeecord-serializer</artifactId>
++    <groupId>io.github.waterfallmc</groupId>
++    <artifactId>waterfall-serializer</artifactId>
+     <version>1.21-R0.5-SNAPSHOT</version>
+     <packaging>jar</packaging>
+ 
+-    <name>BungeeCord-Serializer</name>
+-    <description>Minecraft JSON serializer intended for use with BungeeCord</description>
++    <name>waterfall-Serializer</name>
++    <description>Minecraft JSON serializer intended for use with Waterfall</description>
+ 
+     <dependencies>
+         <dependency>
+@@ -27,13 +27,13 @@
+         </dependency>
+         <dependency>
+             <groupId>${project.groupId}</groupId>
+-            <artifactId>bungeecord-chat</artifactId>
++            <artifactId>waterfall-chat</artifactId>
+             <version>${project.version}</version>
+             <scope>compile</scope>
+         </dependency>
+         <dependency>
+             <groupId>${project.groupId}</groupId>
+-            <artifactId>bungeecord-dialog</artifactId>
++            <artifactId>waterfall-dialog</artifactId>
+             <version>${project.version}</version>
+             <scope>compile</scope>
+         </dependency>
+diff --git a/slf4j/pom.xml b/slf4j/pom.xml
+index a062a210..2a74a343 100644
+--- a/slf4j/pom.xml
++++ b/slf4j/pom.xml
+@@ -4,19 +4,19 @@
+     <modelVersion>4.0.0</modelVersion>
+ 
+     <parent>
+-        <groupId>net.md-5</groupId>
+-        <artifactId>bungeecord-parent</artifactId>
++        <groupId>io.github.waterfallmc</groupId>
++        <artifactId>waterfall-parent</artifactId>
+         <version>1.21-R0.5-SNAPSHOT</version>
          <relativePath>../pom.xml</relativePath>
      </parent>
  
@@ -839,14 +1021,16 @@ index 5c611d8c..8860998c 100644
 -    <artifactId>bungeecord-slf4j</artifactId>
 +    <groupId>io.github.waterfallmc</groupId>
 +    <artifactId>waterfall-slf4j</artifactId>
-     <version>1.21-R0.1-SNAPSHOT</version>
+     <version>1.21-R0.5-SNAPSHOT</version>
      <packaging>jar</packaging>
  
 -    <name>BungeeCord-SLF4J</name>
+-    <description>Wrapper over SLF4J for BungeeCord purposes.</description>
 +    <name>Waterfall-SLF4J</name>
-     <description>Wrapper over SLF4J for BungeeCord purposes.</description>
++    <description>Wrapper over SLF4J for Waterfall purposes.</description>
  
      <properties>
+         <checkstyle.skip>true</checkstyle.skip>
 -- 
-2.46.0.windows.1
+2.50.1.windows.1
 

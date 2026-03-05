@@ -1,14 +1,14 @@
-From cdf8c53417b410c69cd2861f58ff79c8ca4e4078 Mon Sep 17 00:00:00 2001
+From 1d18d29b5d42f40d77350c9503f3a741ddac3d52 Mon Sep 17 00:00:00 2001
 From: Shane Freeder <theboyetronic@gmail.com>
 Date: Sat, 20 Jun 2020 18:21:17 +0100
 Subject: [PATCH] Remove version from brand info
 
 
 diff --git a/proxy/src/main/java/net/md_5/bungee/connection/DownstreamBridge.java b/proxy/src/main/java/net/md_5/bungee/connection/DownstreamBridge.java
-index f2146f67..3b0b9d36 100644
+index 70f8b0b7..76b6a2a6 100644
 --- a/proxy/src/main/java/net/md_5/bungee/connection/DownstreamBridge.java
 +++ b/proxy/src/main/java/net/md_5/bungee/connection/DownstreamBridge.java
-@@ -332,7 +332,7 @@ public class DownstreamBridge extends PacketHandler
+@@ -334,7 +334,7 @@ public class DownstreamBridge extends PacketHandler
              Preconditions.checkState( !serverBrand.contains( bungee.getName() ), "Cannot connect proxy to itself!" );
  
              brand = ByteBufAllocator.DEFAULT.heapBuffer();
@@ -18,5 +18,5 @@ index f2146f67..3b0b9d36 100644
              brand.release();
              // changes in the packet are ignored so we need to send it manually
 -- 
-2.46.0.windows.1
+2.50.1.windows.1
 

@@ -1,18 +1,17 @@
-From dccd905f47c384aafef7a0f1ebf13f1e6f971937 Mon Sep 17 00:00:00 2001
+From 45d7eabfe0b36fb689b6735bd7bdaf7ee3ab6d04 Mon Sep 17 00:00:00 2001
 From: Aaron Hill <aa1ronham@gmail.com>
 Date: Thu, 15 Sep 2016 22:38:37 +0200
 Subject: [PATCH] Fix potion race condition on Forge 1.8.9
 
 
 diff --git a/protocol/src/main/java/net/md_5/bungee/protocol/AbstractPacketHandler.java b/protocol/src/main/java/net/md_5/bungee/protocol/AbstractPacketHandler.java
-index 8d91211b..e2221010 100644
+index 93e3aaed..6f1ec789 100644
 --- a/protocol/src/main/java/net/md_5/bungee/protocol/AbstractPacketHandler.java
 +++ b/protocol/src/main/java/net/md_5/bungee/protocol/AbstractPacketHandler.java
-@@ -278,4 +278,14 @@ public abstract class AbstractPacketHandler
-     public void handle(ServerLinks serverLinks) throws Exception
+@@ -298,4 +298,13 @@ public abstract class AbstractPacketHandler
+     public void handle(BundleDelimiter bundleDelimiter) throws Exception
      {
      }
-+
 +    // Waterfall start
 +    public void handle(net.md_5.bungee.protocol.packet.EntityEffect entityEffect) throws Exception
 +    {
@@ -117,7 +116,7 @@ index 00000000..7ed2dc3a
 +    }
 +}
 diff --git a/proxy/src/main/java/net/md_5/bungee/UserConnection.java b/proxy/src/main/java/net/md_5/bungee/UserConnection.java
-index bf45501a..05116ba0 100644
+index f67cd819..86bdd27e 100644
 --- a/proxy/src/main/java/net/md_5/bungee/UserConnection.java
 +++ b/proxy/src/main/java/net/md_5/bungee/UserConnection.java
 @@ -1,7 +1,9 @@
@@ -128,9 +127,9 @@ index bf45501a..05116ba0 100644
  import com.google.common.collect.ImmutableMap;
 +import com.google.common.collect.Multimap;
  import io.netty.bootstrap.Bootstrap;
- import io.netty.channel.Channel;
  import io.netty.channel.ChannelFuture;
-@@ -129,6 +131,10 @@ public final class UserConnection implements ProxiedPlayer
+ import io.netty.channel.ChannelFutureListener;
+@@ -142,6 +144,10 @@ public final class UserConnection implements ProxiedPlayer
      private final Scoreboard serverSentScoreboard = new Scoreboard();
      @Getter
      private final Collection<UUID> sentBossBars = new HashSet<>();
@@ -142,10 +141,10 @@ index bf45501a..05116ba0 100644
      @Setter
      private String lastCommandTabbed;
 diff --git a/proxy/src/main/java/net/md_5/bungee/connection/DownstreamBridge.java b/proxy/src/main/java/net/md_5/bungee/connection/DownstreamBridge.java
-index 3c286239..e384f168 100644
+index e58bb224..e96dede0 100644
 --- a/proxy/src/main/java/net/md_5/bungee/connection/DownstreamBridge.java
 +++ b/proxy/src/main/java/net/md_5/bungee/connection/DownstreamBridge.java
-@@ -749,6 +749,32 @@ public class DownstreamBridge extends PacketHandler
+@@ -751,6 +751,32 @@ public class DownstreamBridge extends PacketHandler
          }
      }
  
@@ -216,5 +215,5 @@ index d15044f4..bea2bbff 100644
       * Sends the server mod list to the client, or stores it for sending later.
       *
 -- 
-2.46.0.windows.1
+2.50.1.windows.1
 

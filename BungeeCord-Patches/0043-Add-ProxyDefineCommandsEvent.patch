@@ -1,4 +1,4 @@
-From cee938250e1511d53d4e7fd6232192991dfdd407 Mon Sep 17 00:00:00 2001
+From b3485af23c55131baad6e87d389e22b9d4fd8a93 Mon Sep 17 00:00:00 2001
 From: Shane Freeder <theboyetronic@gmail.com>
 Date: Thu, 14 Mar 2019 07:44:06 +0000
 Subject: [PATCH] Add ProxyDefineCommandsEvent
@@ -54,10 +54,10 @@ index 00000000..1fd4fc90
 +
 +}
 diff --git a/proxy/src/main/java/net/md_5/bungee/connection/DownstreamBridge.java b/proxy/src/main/java/net/md_5/bungee/connection/DownstreamBridge.java
-index d06902c6..c177715c 100644
+index 68b914d6..0b8398fc 100644
 --- a/proxy/src/main/java/net/md_5/bungee/connection/DownstreamBridge.java
 +++ b/proxy/src/main/java/net/md_5/bungee/connection/DownstreamBridge.java
-@@ -788,9 +788,25 @@ public class DownstreamBridge extends PacketHandler
+@@ -790,9 +790,25 @@ public class DownstreamBridge extends PacketHandler
      {
          boolean modified = false;
  
@@ -78,13 +78,13 @@ index d06902c6..c177715c 100644
 +
 +        for ( Map.Entry<String, Command> command : event.getCommands().entrySet() )
          {
--            if ( !bungee.getDisabledCommands().contains( command.getKey() ) && commands.getRoot().getChild( command.getKey() ) == null && command.getValue().hasPermission( con ) )
+-            if ( !bungee.getDisabledCommands().contains( command.getKey() ) && command.getValue().hasPermission( con ) )
 +            //noinspection ConstantConditions
 +            if ( true ) // Moved up
 +            // Waterfall end
              {
-                 CommandNode dummy = LiteralArgumentBuilder.literal( command.getKey() ).executes( DUMMY_COMMAND )
-                         .then( RequiredArgumentBuilder.argument( "args", StringArgumentType.greedyString() )
+                 boolean insertDummy = true;
+ 
 -- 
-2.46.0.windows.1
+2.50.1.windows.1
 

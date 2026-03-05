@@ -1,0 +1,408 @@
+From 8ce43eddce9f8122aba16a6a82a5c4bbeb52d5f2 Mon Sep 17 00:00:00 2001
+From: MrXiaoM <coolxiaom95@gmail.com>
+Date: Thu, 5 Mar 2026 21:42:03 +0800
+Subject: [PATCH] fix merge errors
+
+
+diff --git a/log4j/pom.xml b/log4j/pom.xml
+index 81b360eb..1f89eed2 100644
+--- a/log4j/pom.xml
++++ b/log4j/pom.xml
+@@ -5,13 +5,13 @@
+     <parent>
+         <groupId>io.github.waterfallmc</groupId>
+         <artifactId>waterfall-parent</artifactId>
+-        <version>1.21-R0.1-SNAPSHOT</version>
++        <version>1.21-R0.5-SNAPSHOT</version>
+         <relativePath>../pom.xml</relativePath>
+     </parent>
+ 
+     <groupId>io.github.waterfallmc</groupId>
+     <artifactId>waterfall-log4j</artifactId>
+-    <version>1.21-R0.1-SNAPSHOT</version>
++    <version>1.21-R0.5-SNAPSHOT</version>
+     <packaging>jar</packaging>
+ 
+     <name>Waterfall-Log4J</name>
+diff --git a/module/cmd-server/src/main/java/net/md_5/bungee/module/cmd/server/CommandServer.java b/module/cmd-server/src/main/java/net/md_5/bungee/module/cmd/server/CommandServer.java
+index f315f862..f479a888 100644
+--- a/module/cmd-server/src/main/java/net/md_5/bungee/module/cmd/server/CommandServer.java
++++ b/module/cmd-server/src/main/java/net/md_5/bungee/module/cmd/server/CommandServer.java
+@@ -79,22 +79,10 @@ public class CommandServer extends Command implements TabExecutor
+     @Override
+     public Iterable<String> onTabComplete(final CommandSender sender, final String[] args)
+     {
+-        return ( args.length > 1 ) ? Collections.EMPTY_LIST : Iterables.transform( Iterables.filter( ProxyServer.getInstance().getServersCopy().values(), new Predicate<ServerInfo>() // Waterfall: use #getServersCopy()
+-        {
+-            private final String lower = ( args.length == 0 ) ? "" : args[0].toLowerCase( Locale.ROOT );
+-
+-            @Override
+-            public boolean apply(ServerInfo input)
+-            {
+-                return input.getName().toLowerCase( Locale.ROOT ).startsWith( lower ) && input.canAccess( sender );
+-            }
+-        } ), new Function<ServerInfo, String>()
+-        {
+-            @Override
+-            public String apply(ServerInfo input)
+-            {
+-                return input.getName();
+-            }
+-        } );
++        final String serverFilter = ( args.length == 0 ) ? "" : args[0].toLowerCase( Locale.ROOT );
++        return () -> ProxyServer.getInstance().getServers().values().stream()
++                .filter( serverInfo -> serverInfo.getName().toLowerCase( Locale.ROOT ).startsWith( serverFilter ) && serverInfo.canAccess( sender ) )
++                .map( ServerInfo::getName )
++                .iterator();
+     }
+ }
+diff --git a/protocol/src/main/java/net/md_5/bungee/protocol/MinecraftDecoder.java b/protocol/src/main/java/net/md_5/bungee/protocol/MinecraftDecoder.java
+index 0b8df187..c18452f5 100644
+--- a/protocol/src/main/java/net/md_5/bungee/protocol/MinecraftDecoder.java
++++ b/protocol/src/main/java/net/md_5/bungee/protocol/MinecraftDecoder.java
+@@ -17,11 +17,6 @@ import lombok.Setter;
+ public class MinecraftDecoder extends MessageToMessageDecoder<ByteBuf>
+ {
+ 
+-    public MinecraftDecoder(Protocol protocol, boolean server, int protocolVersion)
+-    {
+-        this( protocol, server, protocolVersion, shouldCopyBuffer( protocol, protocolVersion ) );
+-    }
+-
+     @Getter
+     private Protocol protocol;
+     private final boolean server;
+diff --git a/protocol/src/main/java/net/md_5/bungee/protocol/Protocol.java b/protocol/src/main/java/net/md_5/bungee/protocol/Protocol.java
+index 3c8b88b5..bb2c49b4 100644
+--- a/protocol/src/main/java/net/md_5/bungee/protocol/Protocol.java
++++ b/protocol/src/main/java/net/md_5/bungee/protocol/Protocol.java
+@@ -7,11 +7,6 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+ import it.unimi.dsi.fastutil.objects.Object2IntMap;
+ import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
+ 
+-import gnu.trove.impl.Constants;
+-import gnu.trove.map.TIntObjectMap;
+-import gnu.trove.map.TObjectIntMap;
+-import gnu.trove.map.hash.TIntObjectHashMap;
+-import gnu.trove.map.hash.TObjectIntHashMap;
+ import java.util.function.Supplier;
+ import lombok.Data;
+ import lombok.Getter;
+diff --git a/protocol/src/main/java/net/md_5/bungee/protocol/packet/Team.java b/protocol/src/main/java/net/md_5/bungee/protocol/packet/Team.java
+index 459605fd..485e82b2 100644
+--- a/protocol/src/main/java/net/md_5/bungee/protocol/packet/Team.java
++++ b/protocol/src/main/java/net/md_5/bungee/protocol/packet/Team.java
+@@ -56,7 +56,7 @@ public class Team extends DefinedPacket
+                 String collisionRule,
+                 int color, byte friendlyFire, String[] players
+     ) {
+-        this(name, mode, displayName, prefix, suffix, NameTagVisibility.BY_NAME.get(nameTagVisibility), CollisionRule.BY_NAME.get(collisionRule), color, friendlyFire, players);
++        this(name, mode, displayName, prefix, suffix, Either.left(nameTagVisibility), Either.left(collisionRule), color, friendlyFire, players);
+     }
+ 
+     @Override
+diff --git a/proxy/src/main/java/net/md_5/bungee/BungeeCord.java b/proxy/src/main/java/net/md_5/bungee/BungeeCord.java
+index bb4926d9..e3fc4edb 100644
+--- a/proxy/src/main/java/net/md_5/bungee/BungeeCord.java
++++ b/proxy/src/main/java/net/md_5/bungee/BungeeCord.java
+@@ -6,9 +6,6 @@ import com.google.common.collect.Iterables;
+ import com.google.common.collect.Lists;
+ import com.google.common.collect.Sets;
+ import com.google.common.util.concurrent.ThreadFactoryBuilder;
+-import com.google.gson.Gson;
+-import com.google.gson.GsonBuilder;
+-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+ import io.github.waterfallmc.waterfall.conf.WaterfallConfiguration;
+ import io.github.waterfallmc.waterfall.event.ProxyExceptionEvent;
+ import io.github.waterfallmc.waterfall.exception.ProxyPluginEnableDisableException;
+@@ -23,7 +20,6 @@ import io.netty.util.ResourceLeakDetector;
+ import java.io.File;
+ import java.io.FileReader;
+ import java.io.IOException;
+-import java.io.PrintStream;
+ import java.net.InetSocketAddress;
+ import java.net.SocketAddress;
+ import java.nio.charset.StandardCharsets;
+@@ -77,9 +73,6 @@ import net.md_5.bungee.conf.Configuration;
+ import net.md_5.bungee.conf.YamlConfig;
+ import net.md_5.bungee.forge.ForgeConstants;
+ import net.md_5.bungee.jni.NativeCode;
+-import net.md_5.bungee.log.BungeeLogger;
+-import net.md_5.bungee.log.LoggingForwardHandler;
+-import net.md_5.bungee.log.LoggingOutputStream;
+ import net.md_5.bungee.module.ModuleManager;
+ import net.md_5.bungee.netty.PipelineUtils;
+ import net.md_5.bungee.protocol.DefinedPacket;
+@@ -89,11 +82,6 @@ import net.md_5.bungee.protocol.packet.PluginMessage;
+ import net.md_5.bungee.query.RemoteQuery;
+ import net.md_5.bungee.scheduler.BungeeScheduler;
+ import net.md_5.bungee.util.CaseInsensitiveMap;
+-import org.jline.reader.LineReader;
+-import org.jline.reader.LineReaderBuilder;
+-import org.jline.terminal.Terminal;
+-import org.jline.terminal.TerminalBuilder;
+-import org.slf4j.jul.JDK14LoggerFactory;
+ 
+ /**
+  * Main BungeeCord proxy class.
+@@ -376,10 +364,10 @@ public class BungeeCord extends ProxyServer
+                 }
+             };
+             new ServerBootstrap()
+-                    .channelFactory( PipelineUtils.getServerChannelFactory( info.getSocketAddress() ) ) // Waterfall - netty reflection -> factory
++                    .channel( PipelineUtils.getServerChannel( info.getSocketAddress() ) )
+                     .option( ChannelOption.SO_REUSEADDR, true ) // TODO: Move this elsewhere!
+                     .childAttr( PipelineUtils.LISTENER, info )
+-                    .childHandler( PipelineUtils.SERVER_CHILD )
++                    .childHandler( unsafe().getFrontendChannelInitializer().getChannelInitializer() )
+                     .group( bossEventLoopGroup, workerEventLoopGroup )
+                     .localAddress( info.getSocketAddress() )
+                     .bind().addListener( listener );
+diff --git a/proxy/src/main/java/net/md_5/bungee/BungeeServerInfo.java b/proxy/src/main/java/net/md_5/bungee/BungeeServerInfo.java
+index 8f531f85..0d24f1eb 100644
+--- a/proxy/src/main/java/net/md_5/bungee/BungeeServerInfo.java
++++ b/proxy/src/main/java/net/md_5/bungee/BungeeServerInfo.java
+@@ -184,9 +184,9 @@ public class BungeeServerInfo implements ServerInfo
+             }
+         };
+         new Bootstrap()
+-                .channelFactory( PipelineUtils.getChannelFactory( socketAddress ) ) // Waterfall - netty reflection -> factory
++                .channel( PipelineUtils.getChannel( socketAddress ) )
+                 .group( BungeeCord.getInstance().workerEventLoopGroup )
+-                .handler( PipelineUtils.BASE_SERVERSIDE )
++                .handler( ProxyServer.getInstance().unsafe().getServerInfoChannelInitializer().getChannelInitializer() )
+                 .option( ChannelOption.CONNECT_TIMEOUT_MILLIS, BungeeCord.getInstance().getConfig().getRemotePingTimeout() )
+                 .remoteAddress( socketAddress )
+                 .connect()
+diff --git a/proxy/src/main/java/net/md_5/bungee/UserConnection.java b/proxy/src/main/java/net/md_5/bungee/UserConnection.java
+index 525853e4..75313d3d 100644
+--- a/proxy/src/main/java/net/md_5/bungee/UserConnection.java
++++ b/proxy/src/main/java/net/md_5/bungee/UserConnection.java
+@@ -449,7 +449,7 @@ public final class UserConnection implements ProxiedPlayer
+             }
+         };
+         Bootstrap b = new Bootstrap()
+-                .channelFactory( PipelineUtils.getChannelFactory( target.getAddress() ) ) // Waterfall - netty reflection -> factory
++                .channel( PipelineUtils.getChannel( target.getAddress() ) )
+                 .group( ch.getHandle().eventLoop() )
+                 .handler( bungee.unsafe().getBackendChannelInitializer().getChannelInitializer() )
+                 .option( ChannelOption.CONNECT_TIMEOUT_MILLIS, request.getConnectTimeout() )
+diff --git a/proxy/src/main/java/net/md_5/bungee/conf/Configuration.java b/proxy/src/main/java/net/md_5/bungee/conf/Configuration.java
+index 97e96426..1f600dab 100644
+--- a/proxy/src/main/java/net/md_5/bungee/conf/Configuration.java
++++ b/proxy/src/main/java/net/md_5/bungee/conf/Configuration.java
+@@ -2,7 +2,6 @@ package net.md_5.bungee.conf;
+ 
+ import com.google.common.base.Preconditions;
+ import com.google.common.collect.ImmutableMap; // Waterfall
+-import gnu.trove.map.TMap;
+ import java.io.File;
+ import java.io.IOException;
+ import java.util.Arrays;
+diff --git a/proxy/src/main/java/net/md_5/bungee/connection/UpstreamBridge.java b/proxy/src/main/java/net/md_5/bungee/connection/UpstreamBridge.java
+index a48cce2b..02ec5958 100644
+--- a/proxy/src/main/java/net/md_5/bungee/connection/UpstreamBridge.java
++++ b/proxy/src/main/java/net/md_5/bungee/connection/UpstreamBridge.java
+@@ -178,7 +178,7 @@ public class UpstreamBridge extends PacketHandler
+         // Waterfall start
+         return handleChat(message, null);
+     }
+-    private String handleChat(String message, @javax.annotation.Nullable ClientCommand clientCommand)
++    private String handleChat(String message, @org.jetbrains.annotations.Nullable ClientCommand clientCommand)
+     // Waterfall end
+     {
+         for ( int index = 0, length = message.length(); index < length; index++ )
+diff --git a/proxy/src/main/java/net/md_5/bungee/http/HttpClient.java b/proxy/src/main/java/net/md_5/bungee/http/HttpClient.java
+index d3881a3c..a4697498 100644
+--- a/proxy/src/main/java/net/md_5/bungee/http/HttpClient.java
++++ b/proxy/src/main/java/net/md_5/bungee/http/HttpClient.java
+@@ -28,10 +28,6 @@ public class HttpClient
+ 
+     public static final int TIMEOUT = 5000;
+     private static final Cache<String, InetAddress> addressCache = CacheBuilder.newBuilder().expireAfterWrite( 1, TimeUnit.MINUTES ).build();
+-    // Waterfall Start - optionally use async resolver from Netty
+-    private static final io.netty.resolver.dns.DnsAddressResolverGroup dnsResolverGroup =
+-            new io.netty.resolver.dns.DnsAddressResolverGroup(PipelineUtils.getDatagramChannel(), io.netty.resolver.dns.DefaultDnsServerAddressStreamProvider.INSTANCE);
+-    // Waterfall End
+ 
+     public static void get(String url, EventLoop eventLoop, final Callback<String> callback)
+     {
+@@ -60,21 +56,19 @@ public class HttpClient
+             }
+         }
+ 
+-        // Waterfall Start - Move address creation to implementation method
+-        //InetAddress inetHost = addressCache.getIfPresent( uri.getHost() );
+-        //if ( inetHost == null )
+-        //{
+-        //    try
+-        //    {
+-        //        inetHost = InetAddress.getByName( uri.getHost() );
+-        //    } catch ( UnknownHostException ex )
+-        //    {
+-        //        callback.done( null, ex );
+-        //        return;
+-        //    }
+-        //    addressCache.put( uri.getHost(), inetHost );
+-        //}
+-        // Waterfall End
++        InetAddress inetHost = addressCache.getIfPresent( uri.getHost() );
++        if ( inetHost == null )
++        {
++            try
++            {
++                inetHost = InetAddress.getByName( uri.getHost() );
++            } catch ( UnknownHostException ex )
++            {
++                callback.done( null, ex );
++                return;
++            }
++            addressCache.put( uri.getHost(), inetHost );
++        }
+ 
+         ChannelFutureListener future = new ChannelFutureListener()
+         {
+@@ -97,42 +91,8 @@ public class HttpClient
+             }
+         };
+ 
+-
+-        // Waterfall Start - Optionally use Netty's async DNS Resolver
+-        if (net.md_5.bungee.api.ProxyServer.getInstance().getConfig().isUseNettyDnsResolver()) {
+-            getWithNettyResolver(eventLoop, uri, port, future, callback, ssl);
+-        } else {
+-            getWithDefaultResolver(eventLoop, uri, port, future, callback, ssl);
+-        }
+-        //new Bootstrap().channel( PipelineUtils.getChannel() ).group( eventLoop ).handler( new HttpInitializer( callback, ssl, uri.getHost(), port ) ).
+-        //        option( ChannelOption.CONNECT_TIMEOUT_MILLIS, TIMEOUT ).remoteAddress( inetHost, port ).connect().addListener( future );
+-    }
+-
+-    private static void getWithNettyResolver(EventLoop eventLoop, URI uri, int port, ChannelFutureListener future, Callback<String> callback, boolean ssl) {
+-        java.net.InetSocketAddress address = java.net.InetSocketAddress.createUnresolved(uri.getHost(), port);
+-        // Waterfall - netty reflection -> factory
+-        new Bootstrap().channelFactory( PipelineUtils.getChannelFactory( null ) ).group( eventLoop ).handler( new HttpInitializer( callback, ssl, uri.getHost(), port ) ).
+-                option( ChannelOption.CONNECT_TIMEOUT_MILLIS, TIMEOUT ).resolver(dnsResolverGroup).remoteAddress( address ).connect().addListener( future );
+-    }
+-
+-    private static void getWithDefaultResolver(EventLoop eventLoop, URI uri, int port, ChannelFutureListener future, Callback<String> callback, boolean ssl) {
+-        // This is identical to the Bungee implementation of #get other than the absence of the ChannelFutureListener creation
+-        InetAddress inetHost = addressCache.getIfPresent( uri.getHost() );
+-        if ( inetHost == null )
+-        {
+-            try
+-            {
+-                inetHost = InetAddress.getByName( uri.getHost() );
+-            } catch ( UnknownHostException ex )
+-            {
+-                callback.done( null, ex );
+-                return;
+-            }
+-            addressCache.put( uri.getHost(), inetHost );
+-        }
+-        // Waterfall - netty reflection -> factory
+-        new Bootstrap().channelFactory( PipelineUtils.getChannelFactory( null ) ).group( eventLoop ).handler( new HttpInitializer( callback, ssl, uri.getHost(), port ) ).
++        new Bootstrap().channel( PipelineUtils.getChannel( null ) ).group( eventLoop ).handler( new HttpInitializer( callback, ssl, uri.getHost(), port ) ).
+                 option( ChannelOption.CONNECT_TIMEOUT_MILLIS, TIMEOUT ).remoteAddress( inetHost, port ).connect().addListener( future );
+     }
+-    // Waterfall End
++
+ }
+diff --git a/proxy/src/main/java/net/md_5/bungee/netty/PipelineUtils.java b/proxy/src/main/java/net/md_5/bungee/netty/PipelineUtils.java
+index 89816c15..4e2f8cae 100644
+--- a/proxy/src/main/java/net/md_5/bungee/netty/PipelineUtils.java
++++ b/proxy/src/main/java/net/md_5/bungee/netty/PipelineUtils.java
+@@ -72,6 +72,7 @@ public class PipelineUtils
+             {
+                 return false;
+             }
++
+             ListenerInfo listener = ch.attr( LISTENER ).get();
+ 
+             if ( BungeeCord.getInstance().getPluginManager().callEvent( new ClientConnectEvent( remoteAddress, listener ) ).isCancelled() )
+@@ -79,21 +80,7 @@ public class PipelineUtils
+                 return false;
+             }
+ 
+-            ConnectionInitEvent connectionInitEvent = new ConnectionInitEvent(ch.remoteAddress(), listener, (result, throwable) -> { // Waterfall
+-
+-            if (result.isCancelled()) {
+-                ch.close();
+-                return;
+-            }
+-
+-
+-            try {
+-            BASE.initChannel( ch );
+-            } catch (Exception e) {
+-                e.printStackTrace();
+-                ch.close();
+-                return;
+-            }
++            BASE.accept( ch );
+             ch.pipeline().addBefore( FRAME_DECODER, LEGACY_DECODER, new LegacyDecoder() );
+             ch.pipeline().addAfter( FRAME_DECODER, PACKET_DECODER, new MinecraftDecoder( Protocol.HANDSHAKE, true, ProxyServer.getInstance().getProtocolVersion() ) );
+             ch.pipeline().addAfter( FRAME_PREPENDER_AND_COMPRESS, PACKET_ENCODER, new MinecraftEncoder( Protocol.HANDSHAKE, true, ProxyServer.getInstance().getProtocolVersion() ) );
+@@ -145,12 +132,6 @@ public class PipelineUtils
+ 
+     private static boolean epoll;
+     private static boolean io_uring;
+-    // Waterfall start: netty reflection -> factory
+-    private static final ChannelFactory<? extends ServerChannel> serverChannelFactory;
+-    private static final ChannelFactory<? extends ServerChannel> serverChannelDomainFactory;
+-    private static final ChannelFactory<? extends Channel> channelFactory;
+-    private static final ChannelFactory<? extends Channel> channelDomainFactory;
+-    // Waterfall end
+ 
+     static
+     {
+@@ -184,12 +165,6 @@ public class PipelineUtils
+         }
+ 
+         setChannelInitializerHolders();
+-        // Waterfall start: netty reflection -> factory
+-        serverChannelFactory = io_uring ? IOUringServerSocketChannel::new : epoll ? EpollServerSocketChannel::new : NioServerSocketChannel::new;
+-        serverChannelDomainFactory = io_uring ? IOUringServerSocketChannel::new : epoll ? EpollServerDomainSocketChannel::new : null;
+-        channelFactory = io_uring ? IOUringSocketChannel::new : epoll ? EpollSocketChannel::new : NioSocketChannel::new;
+-        channelDomainFactory = io_uring ? IOUringSocketChannel::new : epoll ? EpollDomainSocketChannel::new : null;
+-        // Waterfall end
+     }
+ 
+     public static EventLoopGroup newEventLoopGroup(int threads, ThreadFactory factory)
+@@ -221,34 +196,6 @@ public class PipelineUtils
+         return io_uring ? IoUringSocketChannel.class : epoll ? EpollSocketChannel.class : NioSocketChannel.class;
+     }
+ 
+-    // Waterfall start: netty reflection -> factory
+-    public static ChannelFactory<? extends ServerChannel> getServerChannelFactory(SocketAddress address)
+-    {
+-        if ( address instanceof DomainSocketAddress )
+-        {
+-            ChannelFactory<? extends ServerChannel> factory = PipelineUtils.serverChannelDomainFactory;
+-            Preconditions.checkState( factory != null, "Epoll required to have UNIX sockets" );
+-
+-            return factory;
+-        }
+-
+-        return serverChannelFactory;
+-    }
+-
+-    public static ChannelFactory<? extends Channel> getChannelFactory(SocketAddress address)
+-    {
+-        if ( address instanceof DomainSocketAddress )
+-        {
+-            ChannelFactory<? extends Channel> factory = PipelineUtils.channelDomainFactory;
+-            Preconditions.checkState( factory != null, "Epoll required to have UNIX sockets" );
+-
+-            return factory;
+-        }
+-
+-        return channelFactory;
+-    }
+-    // Waterfall end
+-
+     public static Class<? extends DatagramChannel> getDatagramChannel()
+     {
+         return io_uring ? IoUringDatagramChannel.class : epoll ? EpollDatagramChannel.class : NioDatagramChannel.class;
+-- 
+2.50.1.windows.1
+

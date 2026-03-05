@@ -1,4 +1,4 @@
-From a849bc8ec929e40adeb892cba9130dbbe8010f4c Mon Sep 17 00:00:00 2001
+From 396204a98e9cd53c5579680aa149f92ccf9cefcc Mon Sep 17 00:00:00 2001
 From: Shane Freeder <theboyetronic@gmail.com>
 Date: Mon, 2 Dec 2019 11:35:17 +0000
 Subject: [PATCH] ConnectionInitEvent
@@ -67,29 +67,31 @@ index 00000000..6e79675f
 +    }
 +}
 diff --git a/proxy/src/main/java/net/md_5/bungee/netty/PipelineUtils.java b/proxy/src/main/java/net/md_5/bungee/netty/PipelineUtils.java
-index 6a0d3351..3b157d79 100644
+index 911f3444..3998ed31 100644
 --- a/proxy/src/main/java/net/md_5/bungee/netty/PipelineUtils.java
 +++ b/proxy/src/main/java/net/md_5/bungee/netty/PipelineUtils.java
-@@ -1,6 +1,7 @@
+@@ -1,6 +1,8 @@
  package net.md_5.bungee.netty;
  
  import com.google.common.base.Preconditions;
 +import io.github.waterfallmc.waterfall.event.ConnectionInitEvent;
- import io.netty.buffer.PooledByteBufAllocator;
++import io.netty.buffer.PooledByteBufAllocator;
  import io.netty.channel.Channel;
  import io.netty.channel.ChannelException;
-@@ -68,7 +69,6 @@ public class PipelineUtils
-                 ch.close();
-                 return;
+ import io.netty.channel.ChannelOption;
+@@ -68,7 +70,6 @@ public class PipelineUtils
+             {
+                 return false;
              }
 -
              ListenerInfo listener = ch.attr( LISTENER ).get();
  
              if ( BungeeCord.getInstance().getPluginManager().callEvent( new ClientConnectEvent( remoteAddress, listener ) ).isCancelled() )
-@@ -77,7 +77,21 @@ public class PipelineUtils
-                 return;
+@@ -76,7 +77,21 @@ public class PipelineUtils
+                 return false;
              }
  
+-            BASE.accept( ch );
 +            ConnectionInitEvent connectionInitEvent = new ConnectionInitEvent(ch.remoteAddress(), listener, (result, throwable) -> { // Waterfall
 +
 +            if (result.isCancelled()) {
@@ -99,7 +101,7 @@ index 6a0d3351..3b157d79 100644
 +
 +
 +            try {
-             BASE.initChannel( ch );
++            BASE.initChannel( ch );
 +            } catch (Exception e) {
 +                e.printStackTrace();
 +                ch.close();
@@ -107,17 +109,7 @@ index 6a0d3351..3b157d79 100644
 +            }
              ch.pipeline().addBefore( FRAME_DECODER, LEGACY_DECODER, new LegacyDecoder() );
              ch.pipeline().addAfter( FRAME_DECODER, PACKET_DECODER, new MinecraftDecoder( Protocol.HANDSHAKE, true, ProxyServer.getInstance().getProtocolVersion() ) );
-             ch.pipeline().addAfter( FRAME_PREPENDER, PACKET_ENCODER, new MinecraftEncoder( Protocol.HANDSHAKE, true, ProxyServer.getInstance().getProtocolVersion() ) );
-@@ -88,6 +102,9 @@ public class PipelineUtils
-             {
-                 ch.pipeline().addFirst( new HAProxyMessageDecoder() );
-             }
-+            }); // Waterfall
-+
-+            BungeeCord.getInstance().getPluginManager().callEvent(connectionInitEvent);
-         }
-     };
-     public static final Base BASE = new Base( false );
+             ch.pipeline().addAfter( FRAME_PREPENDER_AND_COMPRESS, PACKET_ENCODER, new MinecraftEncoder( Protocol.HANDSHAKE, true, ProxyServer.getInstance().getProtocolVersion() ) );
 -- 
-2.46.0.windows.1
+2.50.1.windows.1
 

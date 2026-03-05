@@ -1,14 +1,14 @@
-From 09bc7a0ec0409efc9a25cf7eff0b7dbd39fead9f Mon Sep 17 00:00:00 2001
+From ced8c20cb7d99e5604c7de018ea4cbbf78a16c05 Mon Sep 17 00:00:00 2001
 From: Shane Freeder <theboyetronic@gmail.com>
 Date: Sun, 15 Oct 2023 00:36:38 +0100
 Subject: [PATCH] Prevent proxy commands from breaking the chat chain system
 
 
 diff --git a/protocol/src/main/java/net/md_5/bungee/protocol/AbstractPacketHandler.java b/protocol/src/main/java/net/md_5/bungee/protocol/AbstractPacketHandler.java
-index e2221010..4dde7257 100644
+index 6f1ec789..b5d27527 100644
 --- a/protocol/src/main/java/net/md_5/bungee/protocol/AbstractPacketHandler.java
 +++ b/protocol/src/main/java/net/md_5/bungee/protocol/AbstractPacketHandler.java
-@@ -287,5 +287,9 @@ public abstract class AbstractPacketHandler
+@@ -306,5 +306,9 @@ public abstract class AbstractPacketHandler
      public void handle(net.md_5.bungee.protocol.packet.EntityRemoveEffect removeEffect) throws Exception
      {
      }
@@ -19,12 +19,12 @@ index e2221010..4dde7257 100644
      // Waterfall end
  }
 diff --git a/protocol/src/main/java/net/md_5/bungee/protocol/Protocol.java b/protocol/src/main/java/net/md_5/bungee/protocol/Protocol.java
-index b4b6f25e..dce064d7 100644
+index 94dc655b..3c8b88b5 100644
 --- a/protocol/src/main/java/net/md_5/bungee/protocol/Protocol.java
 +++ b/protocol/src/main/java/net/md_5/bungee/protocol/Protocol.java
-@@ -614,6 +614,13 @@ public enum Protocol
-                     map( ProtocolConstants.MINECRAFT_1_20_5, 0x06 ),
-                     map( ProtocolConstants.MINECRAFT_1_21_2, 0x07 )
+@@ -713,6 +713,13 @@ public enum Protocol
+                     map( ProtocolConstants.MINECRAFT_1_21_6, 0x08 ),
+                     map( ProtocolConstants.MINECRAFT_26_1, 0x09 )
              );
 +            // Waterfall start
 +            TO_SERVER.registerPacket(
@@ -76,10 +76,10 @@ index 00000000..08ecf2a3
 +    }
 +}
 diff --git a/protocol/src/main/java/net/md_5/bungee/protocol/packet/ClientCommand.java b/protocol/src/main/java/net/md_5/bungee/protocol/packet/ClientCommand.java
-index 33c838f9..f259ee91 100644
+index 31104505..48b20a7e 100644
 --- a/protocol/src/main/java/net/md_5/bungee/protocol/packet/ClientCommand.java
 +++ b/protocol/src/main/java/net/md_5/bungee/protocol/packet/ClientCommand.java
-@@ -108,4 +108,9 @@ public class ClientCommand extends DefinedPacket
+@@ -119,4 +119,9 @@ public class ClientCommand extends DefinedPacket
      {
          handler.handle( this );
      }
@@ -90,10 +90,10 @@ index 33c838f9..f259ee91 100644
 +    }
  }
 diff --git a/proxy/src/main/java/net/md_5/bungee/connection/UpstreamBridge.java b/proxy/src/main/java/net/md_5/bungee/connection/UpstreamBridge.java
-index ba0ef69d..3aa97849 100644
+index 1e3f9097..a48cce2b 100644
 --- a/proxy/src/main/java/net/md_5/bungee/connection/UpstreamBridge.java
 +++ b/proxy/src/main/java/net/md_5/bungee/connection/UpstreamBridge.java
-@@ -198,16 +198,22 @@ public class UpstreamBridge extends PacketHandler
+@@ -164,16 +164,22 @@ public class UpstreamBridge extends PacketHandler
      @Override
      public void handle(ClientCommand command) throws Exception
      {
@@ -118,7 +118,7 @@ index ba0ef69d..3aa97849 100644
      {
          for ( int index = 0, length = message.length(); index < length; index++ )
          {
-@@ -226,7 +232,13 @@ public class UpstreamBridge extends PacketHandler
+@@ -192,7 +198,13 @@ public class UpstreamBridge extends PacketHandler
              if ( !chatEvent.isCommand() || !bungee.getPluginManager().dispatchCommand( con, message.substring( 1 ) ) )
              {
                  return message;
@@ -133,5 +133,5 @@ index ba0ef69d..3aa97849 100644
          throw CancelSendSignal.INSTANCE;
      }
 -- 
-2.46.0.windows.1
+2.50.1.windows.1
 

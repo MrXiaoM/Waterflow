@@ -1,14 +1,14 @@
-From 4693608b20007f9509821720b16b840f1a6bf7a2 Mon Sep 17 00:00:00 2001
+From 830873c37c27165908575c36ccd4b0ed585cd499 Mon Sep 17 00:00:00 2001
 From: Minecrell <minecrell@minecrell.net>
 Date: Fri, 22 Sep 2017 13:07:31 +0200
 Subject: [PATCH] Handle plugin prefixes using Log4J
 
 
 diff --git a/api/src/main/java/net/md_5/bungee/api/plugin/Plugin.java b/api/src/main/java/net/md_5/bungee/api/plugin/Plugin.java
-index 2286a1ab..9660234d 100644
+index 02f0cd9f..628ce968 100644
 --- a/api/src/main/java/net/md_5/bungee/api/plugin/Plugin.java
 +++ b/api/src/main/java/net/md_5/bungee/api/plugin/Plugin.java
-@@ -102,7 +102,7 @@ public class Plugin
+@@ -103,7 +103,7 @@ public class Plugin
          this.proxy = proxy;
          this.description = description;
          this.file = description.getFile();
@@ -45,5 +45,5 @@ index cfd039cd..8e49e002 100644
                  <TimeBasedTriggeringPolicy />
                  <OnStartupTriggeringPolicy />
 -- 
-2.46.0.windows.1
+2.50.1.windows.1
 

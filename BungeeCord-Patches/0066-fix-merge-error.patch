@@ -1,4 +1,4 @@
-From 386b84bcb539632f0197ad45731c2c317001bad3 Mon Sep 17 00:00:00 2001
+From 6bc3ba20afd9398ed31743f934507eb92fe64942 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?=E4=BA=BA=E9=96=93=E5=B7=A5=E4=BD=9C?=
  <coolxiaom95@gmail.com>
 Date: Thu, 29 Aug 2024 02:15:13 +0800
@@ -6,10 +6,10 @@ Subject: [PATCH] fix merge error
 
 
 diff --git a/proxy/src/main/java/net/md_5/bungee/ServerConnector.java b/proxy/src/main/java/net/md_5/bungee/ServerConnector.java
-index 7a8f38ee..06ffbf76 100644
+index 88ac61e0..06f69107 100644
 --- a/proxy/src/main/java/net/md_5/bungee/ServerConnector.java
 +++ b/proxy/src/main/java/net/md_5/bungee/ServerConnector.java
-@@ -387,16 +387,63 @@ public class ServerConnector extends PacketHandler
+@@ -390,16 +390,63 @@ public class ServerConnector extends PacketHandler
                  // Only send if we are not in the same dimension
                  if ( login.getDimension() != user.getDimension() ) // Waterfall - defer
                  {
@@ -79,10 +79,10 @@ index 7a8f38ee..06ffbf76 100644
              }
              // Waterfall end
 diff --git a/proxy/src/main/java/net/md_5/bungee/connection/DownstreamBridge.java b/proxy/src/main/java/net/md_5/bungee/connection/DownstreamBridge.java
-index 2d3aa70c..d5d3e893 100644
+index 59591141..020024bf 100644
 --- a/proxy/src/main/java/net/md_5/bungee/connection/DownstreamBridge.java
 +++ b/proxy/src/main/java/net/md_5/bungee/connection/DownstreamBridge.java
-@@ -141,7 +141,6 @@ public class DownstreamBridge extends PacketHandler
+@@ -143,7 +143,6 @@ public class DownstreamBridge extends PacketHandler
          } else
          {
              // Waterfall start
@@ -91,5 +91,5 @@ index 2d3aa70c..d5d3e893 100644
              if ( event.isCancelled() && event.getCancelServer() != null )
              {
 -- 
-2.46.0.windows.1
+2.50.1.windows.1
 
